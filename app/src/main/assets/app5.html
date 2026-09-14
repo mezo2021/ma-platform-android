@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script>
+/* ===== جسر الطباعة الموحّد (يعمل في المتصفح وفي تطبيق الأندرويد) ===== */
+function nativePrint(){
+  try{
+    if(window.AndroidPrint && typeof window.AndroidPrint.print === 'function'){
+      window.AndroidPrint.print();
+      return;
+    }
+  }catch(e){}
+  window.print();
+}
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#0f172a">
+<title>منصة M.A للتدريب والتأهيل المهني | مسابقة الجهاز المركزي للرقابة المالية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#0f172a; --primary-accent:#1e3a8a; --secondary:#0284c7;
+  --accent:#f59e0b; --bg-color:#f8fafc; --card-bg:#ffffff;
+  --text-dark:#0f172a; --text-muted:#64748b; --success:#10b981;
+  --danger:#ef4444; --border:#cbd5e1; --gold:#fbbf24;
+  --gradient-1:linear-gradient(135deg,#1e3a8a,#3b82f6);
+  --gradient-gold:linear-gradient(135deg,#d97706,#f59e0b,#fbbf24);
+}
+[data-theme="dark"]{
+  --bg-color:#0a0e1a; --card-bg:#151b2e; --text-dark:#e2e8f0;
+  --text-muted:#94a3b8; --border:#2a3550; --primary-accent:#3b82f6;
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Cairo',sans-serif;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg-color); color:var(--text-dark);
+  padding-top:85px; padding-bottom:60px;
+  transition:background .4s,color .4s; overflow-x:hidden;
+  min-height:100vh;
+}
+
+/* ===== ribbon صدقة جارية مائل ===== */
+.sadaka-ribbon {
+  position: fixed;
+  top: 22px;
+  right: -40px;
+  transform: rotate(45deg);
+  background: linear-gradient(135deg, #10b981, #047857);
+  color: #ffffff;
+  padding: 6px 45px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  z-index: 2001;
+  pointer-events: none;
+  letter-spacing: 1px;
+  border: 1px dashed rgba(255, 255, 255, 0.6);
+}
+
+.container{max-width:1000px;margin:0 auto;padding:0 18px;position:relative;z-index:1}
+
+/* ===== HEADER ===== */
+.top-header{
+  position:fixed; top:0; left:0; right:0; height:78px;
+  background:linear-gradient(135deg,rgba(15,23,42,.97),rgba(30,41,59,.97));
+  backdrop-filter:blur(20px);
+  color:#fff; display:flex; align-items:center; justify-content:space-between;
+  padding:0 22px; box-shadow:0 8px 32px rgba(0,0,0,.35);
+  z-index:1000; border-bottom:3px solid var(--secondary);
+}
+
+.exam-title-head{
+  font-size:1.05rem;font-weight:700;color:#e2e8f0;
+  text-align:center;flex:1;padding:0 20px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+
+.header-right{display:flex;align-items:center;gap:10px}
+
+.timer-card{
+  display:flex;align-items:center;gap:8px;
+  background:#020617; border:2px solid var(--secondary);
+  padding:6px 16px; border-radius:14px;
+  box-shadow:0 0 15px rgba(2,132,199,.3);
+}
+.timer-card.warning{border-color:var(--danger);animation:shake .5s infinite}
+.timer-card.warning .timer-display{color:#ef4444}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-2px)}75%{transform:translateX(2px)}}
+.timer-icon{font-size:1.2rem;color:var(--secondary)}
+.timer-display{font-size:1.3rem;font-weight:900;font-family:monospace;color:#fff;letter-spacing:2px}
+
+.icon-btn{
+  width:42px;height:42px;border-radius:12px;border:none;
+  background:rgba(255,255,255,.08); color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer; font-size:1.2rem; transition:all .25s;
+  border:1px solid rgba(255,255,255,.1);
+}
+.icon-btn:hover{background:rgba(2,132,199,.3);transform:scale(1.05)}
+
+/* ===== START / WELCOME CARD ===== */
+.welcome-card{
+  background:var(--card-bg); border-radius:24px; padding:40px 30px;
+  box-shadow:0 20px 60px rgba(0,0,0,.1);
+  text-align:center; border:1px solid var(--border);
+  max-width:680px; margin:20px auto; position:relative; overflow:hidden;
+}
+
+.platform-badge{
+  display:inline-block; background:rgba(2,132,199,.1); color:var(--secondary);
+  padding:6px 18px; border-radius:30px; font-weight:800; font-size:.9rem;
+  margin-bottom:15px; border:1px solid rgba(2,132,199,.3);
+}
+
+.main-title{
+  font-size:1.6rem;font-weight:900;margin-bottom:12px;
+  color:var(--primary-accent); line-height:1.5;
+}
+.main-subtitle{
+  font-size:1rem;color:var(--text-muted);
+  margin-bottom:25px;font-weight:600;line-height:1.7;
+}
+
+.trainee-form{
+  background:var(--bg-color); padding:22px; border-radius:18px;
+  border:1px solid var(--border); margin-bottom:25px; text-align:right;
+}
+.trainee-form label{display:block; font-weight:800; margin-bottom:8px; color:var(--text-dark); font-size:.95rem}
+.trainee-input{
+  width:100%; padding:14px; border:2px solid var(--border); border-radius:12px;
+  font-size:1.1rem; outline:none; transition:all .3s; background:var(--card-bg); color:var(--text-dark);
+}
+.trainee-input:focus{border-color:var(--secondary); box-shadow:0 0 0 4px rgba(2,132,199,.15)}
+
+/* ===== FOOTER BRANDING ===== */
+.app-footer-credit{
+  margin-top:25px; padding-top:18px; border-top:1px solid var(--border);
+  font-size:.88rem; color:var(--text-muted); font-weight:700; text-align:center;
+}
+.app-footer-credit .designer-name{color:var(--primary-accent); font-weight:800}
+
+/* ===== BUTTONS ===== */
+.btn{
+  padding:13px 26px;border-radius:12px;font-weight:800;font-size:1rem;
+  cursor:pointer;border:none;transition:all .25s;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-primary{background:linear-gradient(135deg,var(--primary-accent),#3b82f6);color:#fff;box-shadow:0 6px 20px rgba(30,58,138,.25)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(30,58,138,.4)}
+.btn-secondary{background:var(--bg-color);color:var(--text-dark);border:1px solid var(--border)}
+.btn-secondary:hover{background:var(--border)}
+.btn-gold{background:var(--gradient-gold);color:#0f172a;font-weight:900;box-shadow:0 6px 20px rgba(245,158,11,.3)}
+.btn-gold:hover{transform:translateY(-2px)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important}
+
+/* ===== QUIZ SECTION ===== */
+#quiz-container{display:none}
+
+.training-stats-bar{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+  margin-bottom:18px;
+}
+.t-stat-card{
+  background:var(--card-bg);border:1px solid var(--border);
+  border-radius:14px;padding:12px;text-align:center;
+  box-shadow:0 3px 10px rgba(0,0,0,.03);
+}
+.t-stat-card .label{font-size:.78rem;color:var(--text-muted);font-weight:700;margin-bottom:4px}
+.t-stat-card .value{font-size:1.25rem;font-weight:900;color:var(--primary-accent)}
+
+.progress-section{
+  background:var(--card-bg);padding:14px 20px;border-radius:16px;
+  margin-bottom:20px;box-shadow:0 3px 10px rgba(0,0,0,.03);
+  border:1px solid var(--border);display:flex;align-items:center;gap:16px;
+}
+.progress-bar-container{
+  flex-grow:1;height:10px;background:var(--bg-color);
+  border-radius:10px;overflow:hidden;
+}
+.progress-bar-fill{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,#0284c7,#1e3a8a);
+  transition:width .4s ease; border-radius:10px;
+}
+.progress-text{font-weight:800;color:var(--primary-accent);font-size:.9rem;white-space:nowrap}
+
+.quiz-card{
+  background:var(--card-bg);border-radius:22px;padding:30px;
+  box-shadow:0 8px 30px rgba(0,0,0,.06);
+  border:1px solid var(--border);margin-bottom:22px;
+}
+
+.question-header{display:flex;align-items:flex-start;gap:14px;margin-bottom:24px}
+.question-number{
+  background:var(--primary-accent);
+  color:#fff;font-weight:800;padding:8px 16px;border-radius:12px;
+  font-size:.95rem;white-space:nowrap;
+}
+.question-text{font-size:1.15rem;font-weight:700;color:var(--text-dark);line-height:1.8;flex:1}
+
+.options-list{display:flex;flex-direction:column;gap:12px}
+.option-item{
+  display:flex;align-items:center;padding:15px 18px;
+  border:2px solid var(--border);border-radius:14px;
+  cursor:pointer;transition:all .2s ease; background:var(--card-bg);
+}
+.option-item:hover{border-color:var(--secondary);background:rgba(2,132,199,.03)}
+.option-item.selected{
+  border-color:var(--primary-accent);
+  background:rgba(30,58,138,.05);
+}
+.option-item.correct-reveal{
+  border-color:var(--success)!important; background:rgba(16,185,129,.08)!important;
+}
+.option-item.wrong-reveal{
+  border-color:var(--danger)!important; background:rgba(239,68,68,.08)!important;
+}
+.option-prefix{
+  width:34px;height:34px;border-radius:50%;
+  background:var(--bg-color);color:var(--text-muted);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;margin-left:14px;flex-shrink:0;
+}
+.option-item.selected .option-prefix{background:var(--primary-accent);color:#fff}
+.option-item.correct-reveal .option-prefix{background:var(--success);color:#fff}
+.option-item.wrong-reveal .option-prefix{background:var(--danger);color:#fff}
+.option-label{font-size:1rem;font-weight:600;color:var(--text-dark);line-height:1.5;flex:1}
+
+.feedback-box{
+  margin-top:18px;padding:14px 18px;border-radius:12px;
+  font-weight:700;display:none;align-items:center;gap:10px;font-size:.95rem;
+}
+.feedback-box.show{display:flex}
+.feedback-box.correct{background:rgba(16,185,129,.1);border:1px solid var(--success);color:#065f46}
+.feedback-box.wrong{background:rgba(239,68,68,.1);border:1px solid var(--danger);color:#991b1b}
+
+.controls-card{
+  display:flex;justify-content:space-between;align-items:center;
+  background:var(--card-bg);padding:16px 22px;border-radius:16px;
+  box-shadow:0 3px 10px rgba(0,0,0,.03);border:1px solid var(--border);gap:10px;
+}
+
+/* Nav Grid */
+.nav-grid-section{
+  margin-top:22px;background:var(--card-bg);padding:18px;
+  border-radius:16px;border:1px solid var(--border);
+}
+.nav-grid-title{font-size:.88rem;font-weight:700;margin-bottom:12px;color:var(--text-muted)}
+.nav-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(40px,1fr));gap:6px}
+.nav-grid-item{
+  height:40px;border-radius:8px;border:1px solid var(--border);
+  background:var(--bg-color);display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:.85rem;cursor:pointer;
+}
+.nav-grid-item.answered{background:rgba(2,132,199,.1);color:var(--secondary);border-color:var(--secondary)}
+.nav-grid-item.active{border-color:var(--primary-accent);box-shadow:0 0 0 2px var(--primary-accent);font-weight:900}
+
+/* ===== RESULT VIEW ===== */
+.result-view{
+  display:none;background:var(--card-bg);border-radius:24px;
+  padding:35px 25px;box-shadow:0 10px 40px rgba(0,0,0,.08);
+  text-align:center;border:1px solid var(--border);
+}
+.result-header{font-size:1.8rem;font-weight:900;color:var(--primary-accent);margin-bottom:6px}
+.result-score-box{
+  display:inline-block;padding:22px 45px;
+  background:var(--bg-color);border-radius:20px;border:2px solid var(--border);
+  margin:20px 0;
+}
+.result-score-text{font-size:3.5rem;font-weight:900;color:var(--primary-accent)}
+.result-status{font-size:1.4rem;font-weight:800;padding:10px 28px;border-radius:30px;display:inline-block;margin-top:10px}
+.status-pass{background:#d1fae5;color:#065f46;border:1px solid var(--success)}
+.status-fail{background:#fee2e2;color:#991b1b;border:1px solid var(--danger)}
+
+.review-list{text-align:right;margin-top:35px;display:flex;flex-direction:column;gap:14px}
+.review-item{background:var(--bg-color);padding:16px 18px;border-radius:12px;border-right:5px solid var(--border)}
+.review-item.correct{border-right-color:var(--success)}
+.review-item.wrong{border-right-color:var(--danger)}
+
+/* ===== CERTIFICATE MODAL ===== */
+.cert-modal{
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,.7);
+  z-index:3000; overflow-y:auto; padding:20px;
+  align-items:center; justify-content:center;
+}
+.cert-modal.show{display:flex}
+
+.certificate-card{
+  background:#fff; color:#0f172a; border:10px double #1e3a8a;
+  padding:45px 35px; border-radius:8px; max-width:850px; width:100%;
+  margin:auto; position:relative; text-align:center;
+  box-shadow:0 20px 50px rgba(0,0,0,.3);
+  background-image:radial-gradient(circle, rgba(30,58,138,0.02) 1px, transparent 1px);
+  background-size:24px 24px;
+}
+.cert-header{font-size:1.5rem; font-weight:900; color:#1e3a8a; margin-bottom:5px; text-transform:uppercase}
+.cert-subtitle{font-size:1rem; font-weight:700; color:#0284c7; margin-bottom:25px}
+.cert-title{font-size:2.2rem; font-weight:900; color:#0f172a; margin:20px 0; border-bottom:2px solid #e2e8f0; display:inline-block; padding-bottom:8px}
+.cert-body{font-size:1.15rem; line-height:2; color:#334155; margin:25px 0}
+.cert-name{font-size:1.8rem; font-weight:900; color:#1e3a8a; border-bottom:2px dashed #0284c7; padding:0 15px; display:inline-block}
+.cert-legal{font-size:.78rem; color:#64748b; margin-top:30px; font-style:italic; border-top:1px solid #e2e8f0; padding-top:12px}
+.cert-footer{display:flex; justify-content:space-between; align-items:flex-end; margin-top:35px; padding:0 20px}
+.cert-stamp{width:100px; height:100px; border:3px dashed #1e3a8a; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.75rem; font-weight:900; color:#1e3a8a; transform:rotate(-10deg)}
+
+/* ===== PRINT STYLES ===== */
+@media print{
+  body * {visibility:hidden}
+  .cert-modal, .cert-modal * {visibility:visible}
+  .cert-modal {position:absolute; left:0; top:0; width:100%; background:#fff; padding:0}
+  .cert-actions {display:none!important}
+  .review-list-print, .review-list-print * {visibility:visible}
+}
+
+@media (max-width:768px){
+  body{padding-top:80px}
+  .top-header{height:70px;padding:0 12px}
+  .exam-title-head{font-size:.8rem}
+  .quiz-card{padding:20px}
+  .question-text{font-size:1rem}
+  .certificate-card{padding:25px 15px}
+  .cert-title{font-size:1.6rem}
+  .cert-name{font-size:1.3rem}
+}
+</style>
+</head>
+<body>
+
+<!-- شريط صدقة جارية المائل -->
+<div class="sadaka-ribbon">صدقة جارية 🌿</div>
+
+<header class="top-header">
+  <div class="header-right">
+    <button class="icon-btn" id="theme-btn" title="المظهر">🌙</button>
+  </div>
+  <div class="exam-title-head">منصة M.A | مسابقة الجهاز المركزي للرقابة المالية</div>
+  <div class="timer-card" id="timer-card">
+    <span class="timer-icon">⏳</span>
+    <span class="timer-display" id="timer">60:00</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- START SCREEN (إلغاء قفل كلمة السر) -->
+  <div class="welcome-card" id="welcome-screen">
+    <div class="platform-badge">منصة M.A للتدريب والتأهيل المهني</div>
+    
+    <h1 class="main-title">📜 مسابقة النظام الداخلي للجهاز المركزي للرقابة المالية</h1>
+    <p class="main-subtitle">البرنامج التفاعلي لإعداد الكوادر والتأهيل للامتحانات (القرار 4 لعام 2015 وتعديلاته)</p>
+
+    <div class="trainee-form">
+      <label for="trainee-name-input">👤 اسم المتدرب الثلاثي (لإصدار شهادة التقييم):</label>
+      <input type="text" id="trainee-name-input" class="trainee-input" placeholder="أدخل اسمك الثلاثي هنا..." value="">
+    </div>
+
+    <button class="btn btn-primary" style="width:100%;font-size:1.15rem;padding:16px" onclick="startTraining()">
+      🚀 بدء برنامج التدريب والاختبار
+    </button>
+
+    <div class="app-footer-credit">
+      إعداد وتصميم: <span class="designer-name">أ. مصطفى علي اكر</span><br>
+      البيئة التفاعلية المتطورة لإعداد الكوادر
+    </div>
+  </div>
+
+  <!-- QUIZ VIEW -->
+  <div id="quiz-container">
+
+    <!-- Training Stats Bar -->
+    <div class="training-stats-bar">
+      <div class="t-stat-card">
+        <div class="label">إجمالي الأسئلة</div>
+        <div class="value" id="t-total">60</div>
+      </div>
+      <div class="t-stat-card">
+        <div class="label">المُجابة</div>
+        <div class="value" id="t-answered">0</div>
+      </div>
+      <div class="t-stat-card">
+        <div class="label">نسبة النجاح المطلوبة</div>
+        <div class="value">75%</div>
+      </div>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-section">
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+      <div class="progress-text" id="progress-text">سؤال 1 من 60</div>
+    </div>
+
+    <!-- Quiz Card -->
+    <div class="quiz-card" id="quiz-card">
+      <div class="question-header">
+        <span class="question-number" id="q-number">سؤال 1</span>
+        <div class="question-text" id="q-text">جاري التحميل...</div>
+      </div>
+      <div class="options-list" id="options-container"></div>
+      <div class="feedback-box" id="feedback-box">
+        <span id="fb-icon">✓</span>
+        <span id="fb-text"></span>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls-card">
+      <button class="btn btn-secondary" id="btn-prev" onclick="prevQuestion()" disabled>◀ السابق</button>
+      <button class="btn btn-gold" onclick="confirmSubmit()">🏁 إنهاء وتصحيح الاختبار</button>
+      <button class="btn btn-primary" id="btn-next" onclick="nextQuestion()">التالي ▶</button>
+    </div>
+
+    <!-- Nav Grid -->
+    <div class="nav-grid-section">
+      <div class="nav-grid-title">🗺️ الانتقال السريع بين الأسئلة:</div>
+      <div class="nav-grid" id="nav-grid"></div>
+    </div>
+
+    <div class="app-footer-credit">
+      إعداد وتصميم: <span class="designer-name">أ. مصطفى علي اكر</span> | البيئة التفاعلية المتطورة لإعداد الكوادر
+    </div>
+  </div>
+
+  <!-- RESULT VIEW -->
+  <div class="result-view" id="result-view">
+    <div style="color:var(--secondary);font-weight:800;font-size:.95rem;margin-bottom:6px">منصة M.A للتدريب والتأهيل المهني</div>
+    <div class="result-header">تقييم النتيجة النهائية</div>
+    <p style="color:var(--text-muted);font-size:.95rem">النظام الداخلي للجهاز المركزي للرقابة المالية (ق4/2015)</p>
+    
+    <div class="result-score-box">
+      <div class="result-score-text" id="score-percentage">0%</div>
+      <div style="font-weight:800;color:var(--text-muted);margin-top:6px" id="score-fraction">0 / 60</div>
+      <div class="result-status" id="result-status">--</div>
+    </div>
+
+    <div style="margin:20px 0;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-gold" id="cert-btn" style="display:none" onclick="showCertificate()">🎓 إصدار شهادة التدريب والتأهيل</button>
+      <button class="btn btn-primary" onclick="printCorrectionScale()">🖨️ طباعة سلم التصحيح والنتائج</button>
+      <button class="btn btn-secondary" onclick="window.location.reload()">🔄 إعادة الاختبار</button>
+    </div>
+
+    <div class="review-list" id="review-list"></div>
+
+    <div class="app-footer-credit">
+      إعداد وتصميم: <span class="designer-name">أ. مصطفى علي اكر</span><br>
+      البيئة التفاعلية المتطورة لإعداد الكوادر
+    </div>
+  </div>
+</div>
+
+<!-- CERTIFICATE MODAL -->
+<div class="cert-modal" id="cert-modal">
+  <div class="certificate-card">
+    <div class="cert-header">منصة M.A للتدريب والتأهيل المهني</div>
+    <div class="cert-subtitle">M.A Platform for Professional Training & Qualification</div>
+    
+    <div class="cert-title">شهادة إتمام برنامج تدريبي وتأهيلي</div>
+    
+    <div class="cert-body">
+      تشهد **منصة M.A للتدريب والتأهيل المهني** بأن المتدرب/ة:<br>
+      <span class="cert-name" id="cert-trainee-name">اسم المتدرب</span><br>
+      قد أتم/ت بنجاح وتفوق الاختبار التقييمي للبرنامج التدريبي في:<br>
+      <strong>"النظام الداخلي للجهاز المركزي للرقابة المالية - القرار 4 لعام 2015"</strong><br>
+      وحصل/ت على نسبة تقييم قدرها: <strong id="cert-score-val">0%</strong>
+    </div>
+
+    <div class="cert-legal">
+      * هذه الشهادة صادرة عن منصة M.A للتدريب والتأهيل المهني لغايات التقييم والتدريب والتأهيل الذاتي فقط، ووفق الإجراءات التنظيمية للامتحانات التأهيلية.
+    </div>
+
+    <div class="cert-footer">
+      <div>
+        <div style="font-weight:800;font-size:.9rem;color:#1e3a8a">إدارة البرامج والتدريب</div>
+        <div style="font-size:.8rem;color:#64748b">منصة M.A للتدريب والتأهيل</div>
+      </div>
+      <div class="cert-stamp">
+        اعتماد M.A<br>تأهيل مهني
+      </div>
+    </div>
+
+    <div class="cert-actions" style="margin-top:25px;display:flex;gap:10px;justify-content:center">
+      <button class="btn btn-primary" onclick="nativePrint()">🖨️ طباعة الشهادة</button>
+      <button class="btn btn-secondary" onclick="closeCert()">إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============ STATE & VARS ============ */
+let activeQuestions = [];
+let currentQuestion = 0;
+let userAnswers = [];
+let timerInterval = null;
+let timeLeft = 60 * 60;
+let traineeName = "";
+
+/* ============ THEME ============ */
+const themeBtn = document.getElementById('theme-btn');
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme', t);
+  themeBtn.textContent = t==='dark' ? '☀️' : '🌙';
+  localStorage.setItem('exam_theme', t);
+}
+setTheme(localStorage.getItem('exam_theme') || 'light');
+themeBtn.onclick = ()=>{
+  const cur = document.documentElement.getAttribute('data-theme');
+  setTheme(cur==='dark'?'light':'dark');
+};
+
+/* ============ ORIGINAL QUESTIONS BANK (60 QUESTIONS INTACT) ============ */
+const originalQuestions = [
+{q:"كُلف موظف فني بإجراء مهمة رقابية ميدانية في إحدى الجهات، لكنه توجه للتنفيذ شفاهة ودون الحصول على 'أمر مهمة' مكتوب. ما هو التكييف القانوني لتصرفه؟",options:["مخالف للنظام الداخلي، حيث يُشترط صدور أمر مهمة رسمي للتنفيذ","تصرف صحيح طالما هناك تكليف شفهي من المدير","يعتمد على موافقة رئيس الجهة المفتش عليها"],correct:0},
+{q:"تقدم موظف في مديرية مالية بدمشق بطلب رد المحقق للشك في حياده، ما هي المهلة التي حددها النظام الداخلي لإبلاغ قيادة الجهاز بهذا الطلب؟",options:["خلال 24 ساعة من تاريخ تقديمه","خلال 72 ساعة من تقديم الطلب","خلال أسبوع من تاريخ بدء الاستجواب"],correct:0},
+{q:"قدم موظف خاضع للتحقيق بفرع الجهاز في محافظة حلب طلب رد للمحقق، ما هي المهلة المحدد قانوناً لإبلاغ قيادة الجهاز في هذه الحالة؟",options:["24 ساعة","72 ساعة وفق النص الخاص بالمناطق خارج دمشق","خمسة أيام عمل رسمية"],correct:1},
+{q:"من هو الشخص المعتمد قانوناً لشغل وظيفة أمين سر مجلس الجهاز المركزي للرقابة المالية؟",options:["عامل فني يسميه رئيس الجهاز","مدير الشؤون القانونية بالوزارة حكماً","أكبر المفتشين المعاونين سناً"],correct:0},
+{q:"تستدعي حاجة التفتيش إصدار أمر مهمة لتكليف فريق عمل ضمن فرع الجهاز بالمحافظة، من هي السلطة الصادرة للأمر؟",options:["مدير الإدارة الفرعية أو مدير الفرع حسب الحالة","رئيس مجلس الشعب","المحافظ المختص"],correct:0},
+{q:"يقوم مفتش بتفتيش خزينة إحدى المؤسسات العامة، ما هي العناصر الأساسية التي يتوجب عليه شمولها في عملية التفتيش؟",options:["المقبوض والمدفوع ومطابقة الموجود الفعلي للرصيد القيدي وتدقيق حساب المصرف","جرد الأثاث المكتبي فقط","مراجعة حضور وانصراف الموظفين"],correct:0},
+{q:"ما هو التعريف التنظيمي المحدد لـ 'وكيل الجهاز' وفقاً لأحكام النظام الداخلي؟",options:["عامل فني يعاون رئيس الجهاز في مجال اختصاصاته المنصوص عليها","محامٍ خارجي يمثل الجهاز في القضايا","مدير الإدارة المالية بالوزارة"],correct:0},
+{q:"أصدر المجلس الأعلى بالجهاز مجموعة من القرارات التنظيمية، من هي السلطة المباشرة المكلفة بتنفيذ هذه القرارات؟",options:["رئيس الجهاز","وزير المالية","نائب رئيس مجلس الدولة"],correct:0},
+{q:"من هو المسؤول الأول المنوط به تحديد وصرف التعويضات والحوافز للعاملين بالجهاز وفق الاختصاص؟",options:["رئيس الجهاز","مدير الموازنة العامة","رئيس النقابة"],correct:0},
+{q:"صدر بحق موظف فني عقوبة تأديبية تتضمن 'إلغاء الترفيع'، ما هو الأثر المباشر لهذه العقوبة على وضع الموظف؟",options:["الحرمان من الترفيع لمدة لا تتجاوز سنتين","فصله من الخدمة حكماً","خصم 50% من الراتب مدى الحياة"],correct:0},
+{q:"أراد عامل خاضع للتحقيق تقديم طلب لتنحية المحقق المكلّف بقضيته، ما هو التوقيت الأصولي والمقبول لتقديم هذا الطلب؟",options:["في بداية التحقيق وقبل الاستجواب ما لم يظهر السبب لاحقاً","بعد صدور القرار التأديبي النهائي","في أي وقت حتى لو انتهى التحقيق"],correct:0},
+{q:"ما هي الحدود القانونية المسموح بها لفرض عقوبة حسم الأجر الشهري على العامل الفني وفق النظام الداخلي؟",options:["بنسبة لا تتجاوز 10% من الأجر الشهري غير الصافي ولمدة من شهر إلى سنة","حسم 50% من الأجر لمدة سنتين","حسم الأجر الكامل لمدة أسبوع"],correct:0},
+{q:"ما هو شرط النصاب القانوني اللازم لصحة انعقاد جلسات المجلس الأعلى للجهاز؟",options:["حضور رئيس الجهاز وأكثرية الأعضاء","حضور جميع الأعضاء دون غياب أي عضو","حضور رئيس الجهاز وعضو واحد فقط"],correct:0},
+{q:"هل يجوز قانوناً لرئيس الجهاز تكليف وكلاء الجهاز بإدارة الإدارات الفنية بقرارات تنظيمية؟",options:["نعم، يجوز بقرار من رئيس الجهاز","لا يجوز مطلقاً","يجوز فقط بموافقة مجلس الشعب"],correct:0},
+{q:"عُوقب عامل فني بـ 'التسريح التأديبي' نتيجة مخالفة جسيمة، هل يحق له إعادة التعيين في الجهاز أو في هيئة رقابية أخرى؟",options:["لا يجوز إعادته إلى الجهاز أو إلى أي جهة رقابية أخرى","يجوز بعد مرور سنة واحدة","يجوز بشرط إجراء مسابقة جديدة"],correct:0},
+{q:"من هي السلطة المختصة باقتراح أسماء وكلاء الجهاز المركزي للرقابة المالية؟",options:["رئيس الجهاز","وزير العدل","مجلس إدارة البنك المركزي"],correct:0},
+{q:"فرضت الإدارة عقوبة 'اللوم' على موظف فني، كيف يتم توجيه هذه العقوبة وما أثرها الممكن على السجل الوظيفي؟",options:["إخطار كتابي بالمخالفة، ويمكن أن ينص القرار على عدم تسجيلها في سجل العامل","حرمان من الراتب لمدة شهر مع النشر بالإعلام","تخفيض الفئة الوظيفية حكماً"],correct:0},
+{q:"دُعي عدد من العاملين الفنيين لحضور اجتماعات المجلس الأعلى للاستئناس بآرائهم، هل يحق لهم التصويت على القرارات؟",options:["لا، ليس لهم حق التصويت","نعم، صوتهم يعادل صوت الوكيل","يحق لهم التصويت فقط في الأمور المالية"],correct:0},
+{q:"عند تصويت المجلس على قرار محدد وتساوت الأصوات بين الطرفين، كيف يُحسم القرار وفق النظام؟",options:["يُرجح الجانب الذي فيه صوت رئيس الجهاز","يُلغى القرار نهائياً","يُحال الموضوع للوزير المختص"],correct:0},
+{q:"كيف يتم تحديد المهام والاختصاصات الدقيقة للإدارة الفرعية أو الإدارات الفنية داخل الجهاز؟",options:["بقرار من رئيس الجهاز بناءً على اقتراح المجلس وحسب متطلبات العمل","بقرار من مدير الفرع بالمحافظة","بتعليمات شفهية من المفتش الأول"],correct:0},
+{q:"ما هي الأداة التنظيمية المعتمدة لتحديد نطاق الجهات العامة التابعة لكل إدارة فنية وفرع؟",options:["قرار يصدره رئيس الجهاز بناءً على اقتراح الوكيل المختص","دستور الدولة","قانون الصادر عن المحافظة"],correct:0},
+{q:"احتاجت إحدى الفحوصات الرقابية لخبرة هندسية دقيقة غير متوفرة بين كادر الجهاز، ما هو الإجراء المتاح؟",options:["الاستعانة بالخبراء أو أصحاب الاختصاص بعقود لعدم توفر الاختصاص أو عدم كفايته","إلغاء المراجعة التفتيشية فوراً","تكليف موظف إداري بالقيام بالخبرة الهندسية"],correct:0},
+{q:"ما هو التعريف الأصولي المعتمد لـ 'العامل المؤقت' وفق النظام الداخلي للجهاز؟",options:["من يُستخدم على أعمال مؤقتة بطبيعتها وفق أحكام القانون","من يعمل بالجهاز لمدة 20 سنة متواصلة","كل شخص لا يحمل شهادة جامعية"],correct:0},
+{q:"ما هي الغاية الجوهرية والأساسية المحددة لمرحلة تدريب المفتش المعاون عند بداية التحاقه؟",options:["رفع الكفاءة الفنية والمهنية ودراسة القوانين والأنظمة ذات الصلة","شغل أوقات الفراغ في الإدارة","القيام بالأعمال المكتوبة الشفهية"],correct:0},
+{q:"ما هي الوثيقة المرجعية التي تحدد الشروط والواجبات والمؤهلات المطلوبة لإسناد أي وظيفة بالجهاز؟",options:["بطاقة الوصف الوظيفي بالنظام الداخلي","جدول الحضور والغياب","الطلب الشخصي للموظف"],correct:0},
+{q:"من ينوب عن رئيس الجهاز ويُمثل الجهاز أمام الغير والجهات القضائية والرسمية؟",options:["رئيس الجهاز وفق اختصاصه","أمين سر المجلس","المفتش المعاون"],correct:0},
+{q:"هل يجوز أن تُنفذ مديرية فنية في الجهاز مهمة تفتيشية خارج نطاق خطة العمل السنوية المعتمدة؟",options:["لا، تعمل الإدارات حتماً ضمن إطار خطة العمل السنوية والقانون","نعم، يجوز ذلك بناءً على رغبة المفتش","نعم، في حال عدم وجود عمل آخر"],correct:0},
+{q:"ما هي السلطة التي تملك صلاحية الدعوة لعقد اجتماعات المجلس الأعلى للجهاز؟",options:["رئيس الجهاز","معاون وزير المالية","نائب رئيس مجلس الدولة"],correct:0},
+{q:"ما هي اللجنة المنوط بها تنظيم الجاهزية والحماية والإخلاء والحراسة في المباني التابعة للجهاز؟",options:["اللجنة المختصة بالجاهزية والحماية والأمن المشكلة وفق النظام","لجنة المشتريات","مجلس التأديب الأعلى"],correct:0},
+{q:"ما مدى التزام المفتش المعاون بالتوجيهات الصادرة إليه أثناء أدائه لعمله الرقابي؟",options:["يلتزم بتوجيهات وتعليمات المراكز الأعلى رفيعة المستوى","له الحرية الكاملة في تجاهل التوجيهات","يلتزم فقط بتعليمات الموظف الإداري"],correct:0},
+{q:"أي من الجهات التالية يُعد شاملاً لنطاق رقابة القطاع الإداري بالمرسوم والنظام الداخلي؟",options:["الوزارات والإدارات والوحدات المحلية ومديريات الأوقاف ووحدات الحسابات المستقلة","الشركات الخاصة الأجنبية فقط","الجمعيات الأهلية التي لا تتلقى أي دعم"],correct:0},
+{q:"ما نوع العمالة التي يتم استخدامها في أعمال ومواسم دورية متعارف عليها حسب طبيعة مهام الجهاز؟",options:["العامل الموسمي","العامل الدائم الأصيل","المفتش الأول"],correct:0},
+{q:"من هو المسؤول عن متابعة وإصدار التقرير السنوي الشامل لمخرجات أعمال الرقابة المالية؟",options:["رئيس الجهاز ضمن صلاحياته","مدير الإدارة الفرعية بدمشق","نقيب المحاسبين"],correct:0},
+{q:"ما هو الشرط الأساسي الذي يُشترط لوجوده قبل التعيين الأصيل للعاملين ضمن الجهاز؟",options:["أن يكون التعيين ضمن الملاك العددي المعتمد","أن يكون التعيين بطلب شفهي","ألا يحمل شهادة جامعية"],correct:0},
+{q:"عند مفاضلة واختيار متعاقد مهني خارجي للحاجة الرقابية، ما هو المعيار الأول في الاختيار؟",options:["الخبرة والمؤهلات المناسبة وفق النص","الأقرب سناً للمدير","صاحب العرض المالي الأقل بغض النظر عن الخبرة"],correct:0},
+{q:"عند تدقيق عمليات الإيرادات والنفقات لدى جهة خاضعة، ما الذي تفحصه الرقابة المالية؟",options:["الحسابات والمستندات والدفاتر والسجلات ونظامية التصرفات","سجلات الحضور اليومي فقط","شكل البناء الخارجي للجهة"],correct:0},
+{q:"ما هو شرط إشغال الوظائف الفنية العليا في هيكلية الجهاز المركزي للرقابة المالية؟",options:["تحقق المستوى الفني والمهني المطلوب وفق النظام","الأقدمية في العمر فقط","الموافقة الشفهية من باقي الموظفين"],correct:0},
+{q:"ما هي السلطة التي تتولى القيادة التنفيذية والإدارية العليا للجهاز وتدير شؤونه؟",options:["رئيس الجهاز","مجلس المحافظة","مدير المالية"],correct:0},
+{q:"كم عدداً من المديرين الفنيين يسميهم رئيس الجهاز كأعضاء دائمين في المجلس الأعلى للجهاز؟",options:["ثلاثة مديرين","خمسة مديرين","مدير واحد فقط"],correct:0},
+{q:"ما هي إحدى الوثائق التنظيمية السنوية الرئيسية التي يتولى رئيس الجهاز إعدادها وإقرارها؟",options:["خطة العمل السنوية","قانون العقود الموحد","الميزانية العامة للدول المجاورة"],correct:0},
+{q:"ما هو المرجع الذي يصنف الوظائف المماثلة ويحدد قواعد الترفيع والتقييم للكوادر الفنية؟",options:["النظام الداخلي والوصف الوظيفي والقوانين النافذة","التعليمات الشخصية لرؤساء الأقسام","قانون العمل الخاص"],correct:0},
+{q:"ما الدور التوجيهي الرئيسي لخطة العمل السنوية بالنسبة للإدارات الفنية والفروع؟",options:["تؤطر وتحدد تنفيذ اختصاصات الإدارات والفروع خلال العام","تُغني عن تطبيق القوانين النافذة","تقتصر على توزيع الإجازات الإدارية"],correct:0},
+{q:"ما الصفة التنظيمية القانونية لـ 'رئيس القسم' بحسب التعريفات الواردة بالنظام الداخلي؟",options:["العامل الذي يرأس قسماً من العمل المتجانس","مدير الفرع في المحافظة","الوكيل المساعد لرئيس الجهاز"],correct:0},
+{q:"كيف يُعرّف النظام الداخلي للجهاز وظيفة 'مدير الفرع'؟",options:["العامل الذي يرأس فرع الجهاز في المحافظة","الموظف المسؤول عن الأرشيف المركزي","أمين سر المجلس الأعلى"],correct:0},
+{q:"ما هي الجهة المخولة بوضع القرارات التنظيمية السنوية التي تُسير الأعمال الرقابية بالجهاز؟",options:["رئيس الجهاز وفق الأحكام والقوانين","رئيس محكمة النقض","اتحاد الغرف التجارية"],correct:0},
+{q:"أثناء فحص أعمال الصندوق، اكتشف المفتش عدم مطابقة الرصيد القيدي مع الموجود الفعلي، ماذا يشمل التفتيش أيضاً؟",options:["تدقيق كافة المقبوضات والمدفوعات وحساب المصرف القائم للجهة","إغلاق الجهة الحكومية نهائياً","مصادرة الأموال الشخصية للموظفين"],correct:0},
+{q:"ما هي الأداة التنظيمية الأساسية التي تُحدد هيكل الجهاز واختصاصاته وإجراءات العمل الداخلية؟",options:["النظام الداخلي للجهاز (القرار 4 لعام 2015)","قانون التجارة العام","قانون العقوبات العام"],correct:0},
+{q:"من هو الشخص الذي يملك صلاحية التوقيع على قرارات منح التعويضات والحوافز الإنتاجية لكوادر الجهاز؟",options:["رئيس الجهاز","وزير المالية","مدير الحسابات في المحافظة"],correct:0},
+{q:"من يتولى رئاسة اجتماعات المجلس الأعلى للجهاز المركزي للرقابة المالية رسمياً؟",options:["رئيس الجهاز","وزير العدل","نائب رئيس مجلس الوزراء"],correct:0},
+{q:"ما هي الجهة المسؤولة عن تأمين سلامة وحماية المباني والوثائق والأنظمة البرمجية داخل الجهاز؟",options:["اللجنة المختصة بالجاهزية والحماية والأمن تشكل وفق النظام","شركة حراسة أجنبية","فرق الكشاف التابعة للمحافظة"],correct:0},
+{q:"ما هو المصدر المباشر المستمد منه كافة صلاحيات واختصاصات الموظف الفني أثناء ممارسة التفتيش؟",options:["القانون والنظام الداخلي وخطة العمل وأمر المهمة الرسمي","الاجتهاد الشخصي للموظف دون ضوابط","التعليمات الشفهية من مدراء الشركات الخاضعة"],correct:0},
+{q:"متى يحق للجهاز الاستعانة بالخبراء الاستشاريين بعقود خارجية؟",options:["عند عدم توفر الاختصاص المطلوب بين العاملين أو عدم كفايته","في جميع الأوقات دون شرط","فقط عند تعطل الحواسيب"],correct:0},
+{q:"ما هي المهام الأساسية الموكلة لأمين سر المجلس الأعلى للجهاز؟",options:["تدوين المحاضر ومتابعة تنفيذ تكليفات المجلس ويكون عاملاً فنياً يسميه الرئيس","إصدار قرارات النقل والترفيع منفصلاً","التفتيش الميداني على المصارف"],correct:0},
+{q:"ما هي الحدود التي تُطبق فيها رقابة الجهاز على المؤسسات والجهات التابعة للقطاع الإداري؟",options:["الجهات المحددة بالنظام والقانون بما فيها مساهمة الدولة أو دعمها","الشركات التي لا تساهم فيها الدولة مطلقاً","البعثات الأجنبية الأهلية"],correct:0},
+{q:"إذا صَدَرَ قرار بتعاقد مؤقت لأعمال غير ذات طبيعة مستمرة، فما التكييف القانوني لهذا العامل؟",options:["عامل مؤقت وفق أحكام القانون والنظام","مفتش أول دائم","عامل أصيل بمرتبة وكيل"],correct:0},
+{q:"أراد أحد المفتشين المعاونين الامتناع عن أداء المهام التدريبية الموكلة إليه، ما الموقف القانوني؟",options:["يُعد مخلاً بوجباته، حيث يُكلف بالمهام لرفع كفاءته الفنية والمهنية","يحق له الامتناع لأن التكليف اختياري","يُرفع إلى مرتبة مدير فوراً"],correct:0},
+{q:"أي من المراتب التالية تُصنف ضمن فئة 'العاملين الفنيين' المحددة بالنظام الداخلي للجهاز؟",options:["رئيس الجهاز، الوكيل، المدير، معاون المدير، رئيس القسم، المفتش الأول، المفتش، المفتش المعاون","العمال الموسميون في الحدائق فقط","السائقين والحراس دون غيرهم"],correct:0},
+{q:"ما هو الأساس والأصل المعتمد في تقييم أداء العامل الفني لغرض منح الترفيعات؟",options:["قياس الكفاءة والإنتاجية وربط الترفيع بالأحكام النافذة","عامل السن فقط","التوصية الشفهية من معارفه"],correct:0},
+{q:"إذا قدم موظف خاضع للرقابة طلب رد المحقق لرئيس الجهاز قبل بدء التحقيق، فما إجراء رئيس الجهاز؟",options:["النظر بالطلب وفق الأحكام والبت فيه أو تكليف محقق آخر","إهمال الطلب حتماً","حبس الموظف المقدم للطلب فوراً"],correct:0},
+{q:"ما هي الصفة المالية الرئيسية التي يتمتع بها رئيس الجهاز فيما يتعلق بالموازنة الخاصة للجهاز؟",options:["صفة 'آمر الصرف' للموازنة الخاصة بالجهاز","محاسب الإدارة حصراً","أموال الموازنة تعود لحسابه الشخصي"],correct:0}
+];
+
+/* ============ PREPARE & SHUFFLE QUESTIONS ============ */
+function prepareShuffledQuestions(){
+  activeQuestions = originalQuestions.map(q => {
+    let optsWithIndex = q.options.map((opt, idx) => ({
+      text: opt,
+      isCorrect: idx === q.correct
+    }));
+    
+    // خلط ترتيب الخيارات لتوزيع الإجابات بين أ، ب، ج...
+    optsWithIndex.sort(() => Math.random() - 0.5);
+    
+    let newCorrect = optsWithIndex.findIndex(o => o.isCorrect);
+    let shuffledOpts = optsWithIndex.map(o => o.text);
+
+    return {
+      q: q.q,
+      options: shuffledOpts,
+      correct: newCorrect
+    };
+  });
+
+  // خلط ترتيب الأسئلة للسحب العشوائي من البنك
+  activeQuestions.sort(() => Math.random() - 0.5);
+}
+
+/* ============ START TRAINING ============ */
+function startTraining(){
+  const nameInput = document.getElementById('trainee-name-input').value.trim();
+  traineeName = nameInput !== "" ? nameInput : "المتدرب";
+  
+  document.getElementById('welcome-screen').style.display = 'none';
+  document.getElementById('quiz-container').style.display = 'block';
+
+  prepareShuffledQuestions();
+  userAnswers = new Array(activeQuestions.length).fill(null);
+  
+  renderNavGrid();
+  loadQuestion(0);
+  startTimer();
+}
+
+function renderNavGrid(){
+  const nav = document.getElementById('nav-grid');
+  nav.innerHTML = '';
+  activeQuestions.forEach((_, i)=>{
+    const b = document.createElement('div');
+    b.className = 'nav-grid-item' + (i===0?' active':'');
+    b.id = 'nav-item-'+i;
+    b.textContent = i+1;
+    b.onclick = ()=>goToQuestion(i);
+    nav.appendChild(b);
+  });
+}
+
+/* ============ LOAD QUESTION ============ */
+function loadQuestion(idx){
+  currentQuestion = idx;
+  const q = activeQuestions[idx];
+
+  document.getElementById('q-number').textContent = 'سؤال ' + (idx+1);
+  document.getElementById('q-text').textContent = q.q;
+
+  const cont = document.getElementById('options-container');
+  cont.innerHTML = '';
+  const prefixes = ['أ','ب','ج','د'];
+
+  q.options.forEach((opt, i)=>{
+    const sel = userAnswers[idx] === i;
+    const d = document.createElement('div');
+    d.className = 'option-item' + (sel?' selected':'');
+    d.onclick = ()=>selectOption(i);
+    d.innerHTML = `<span class="option-prefix">${prefixes[i]}</span><span class="option-label">${opt}</span>`;
+    cont.appendChild(d);
+  });
+
+  const fb = document.getElementById('feedback-box');
+  fb.className = 'feedback-box';
+  if(userAnswers[idx] !== null){
+    const isCorrect = userAnswers[idx] === q.correct;
+    fb.classList.add('show', isCorrect ? 'correct':'wrong');
+    document.getElementById('fb-icon').textContent = isCorrect ? '✓':'✗';
+    document.getElementById('fb-text').textContent = isCorrect 
+      ? 'إجابة صحيحة' 
+      : 'إجابة خاطئة - الإجابة الصحيحة: ' + prefixes[q.correct] + ') ' + q.options[q.correct];
+  }
+
+  const answered = userAnswers.filter(a=>a!==null).length;
+  document.getElementById('t-answered').textContent = answered;
+  
+  const pct = ((idx+1)/activeQuestions.length)*100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = `سؤال ${idx+1} من ${activeQuestions.length}`;
+
+  document.getElementById('btn-prev').disabled = idx===0;
+  document.getElementById('btn-next').textContent = idx===activeQuestions.length-1 ? 'النهاية ✓' : 'التالي ▶';
+
+  document.querySelectorAll('.nav-grid-item').forEach((el,i)=>{
+    el.classList.remove('active');
+    if(i===idx) el.classList.add('active');
+  });
+}
+
+/* ============ SELECT OPTION ============ */
+function selectOption(optIdx){
+  if(userAnswers[currentQuestion] !== null) return;
+
+  userAnswers[currentQuestion] = optIdx;
+  const q = activeQuestions[currentQuestion];
+  const isCorrect = optIdx === q.correct;
+
+  const items = document.querySelectorAll('#options-container .option-item');
+  items.forEach((el,i)=>{
+    el.classList.remove('selected');
+    if(i === optIdx) el.classList.add('selected');
+    if(i === q.correct) el.classList.add('correct-reveal');
+    if(i === optIdx && !isCorrect) el.classList.add('wrong-reveal');
+  });
+
+  const fb = document.getElementById('feedback-box');
+  fb.classList.add('show', isCorrect ? 'correct':'wrong');
+  document.getElementById('fb-icon').textContent = isCorrect ? '✓':'✗';
+  const prefixes = ['أ','ب','ج','د'];
+  document.getElementById('fb-text').textContent = isCorrect 
+    ? 'إجابة صحيحة' 
+    : 'إجابة خاطئة - الإجابة الصحيحة: ' + prefixes[q.correct] + ') ' + q.options[q.correct];
+
+  const nav = document.getElementById('nav-item-'+currentQuestion);
+  if(nav) nav.classList.add('answered');
+
+  const answered = userAnswers.filter(a=>a!==null).length;
+  document.getElementById('t-answered').textContent = answered;
+}
+
+/* ============ NAVIGATION ============ */
+function nextQuestion(){ if(currentQuestion < activeQuestions.length-1) loadQuestion(currentQuestion+1); }
+function prevQuestion(){ if(currentQuestion > 0) loadQuestion(currentQuestion-1); }
+function goToQuestion(i){ loadQuestion(i); }
+
+/* ============ TIMER ============ */
+function startTimer(){
+  timerInterval = setInterval(()=>{
+    timeLeft--;
+    const m = Math.floor(timeLeft/60);
+    const s = timeLeft%60;
+    document.getElementById('timer').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    if(timeLeft <= 300) document.getElementById('timer-card').classList.add('warning');
+    if(timeLeft <= 0){
+      clearInterval(timerInterval);
+      submitExam();
+    }
+  },1000);
+}
+
+/* ============ SUBMIT EXAM ============ */
+function confirmSubmit(){
+  const un = userAnswers.filter(a=>a===null).length;
+  let msg = 'هل أنت متأكد من إنهاء الاختبار وتصحيح الإجابات؟';
+  if(un>0) msg = `لديك ${un} سؤال لم تُجب عليها. هل تريد إنهاء التقييم الآن؟`;
+  if(confirm(msg)) submitExam();
+}
+
+function submitExam(){
+  clearInterval(timerInterval);
+  let correctCount = 0;
+  userAnswers.forEach((a,i)=>{
+    if(a === activeQuestions[i].correct) correctCount++;
+  });
+
+  const pct = Math.round((correctCount/activeQuestions.length)*100);
+  document.getElementById('quiz-container').style.display = 'none';
+  const rv = document.getElementById('result-view');
+  rv.style.display = 'block';
+
+  document.getElementById('score-percentage').textContent = pct + '%';
+  document.getElementById('score-fraction').textContent = correctCount + ' / ' + activeQuestions.length;
+
+  const statusEl = document.getElementById('result-status');
+  const certBtn = document.getElementById('cert-btn');
+
+  // درجة النجاح 75% أو أكثر
+  if(pct >= 75){
+    statusEl.textContent = 'النتيجة: ناجح ومؤهل 🎉';
+    statusEl.className = 'result-status status-pass';
+    certBtn.style.display = 'inline-flex';
+  } else {
+    statusEl.textContent = 'النتيجة: لم تجتز نسبة النجاح (75%) - يُنصح بإعادة التدريب';
+    statusEl.className = 'result-status status-fail';
+    certBtn.style.display = 'none';
+  }
+
+  // عرض سلم التصحيح الكامل للأسئلة
+  const rl = document.getElementById('review-list');
+  rl.innerHTML = '<h3 style="margin-bottom:18px;color:var(--primary-accent)">📋 سلم التصحيح والمراجعة التفصيلية:</h3>';
+  const prefixes = ['أ','ب','ج','د'];
+  activeQuestions.forEach((q,i)=>{
+    const a = userAnswers[i];
+    const ok = a === q.correct;
+    const item = document.createElement('div');
+    item.className = 'review-item ' + (ok ? 'correct':'wrong');
+    const userTxt = a!==null ? prefixes[a]+') '+q.options[a] : 'لم تُجب';
+    const corrTxt = prefixes[q.correct]+') '+q.options[q.correct];
+    item.innerHTML = `
+      <div style="font-weight:800;font-size:1rem;margin-bottom:6px">س${i+1}: ${q.q}</div>
+      <div style="color:${ok?'var(--success)':'var(--danger)'};font-weight:700">
+        إجابتك: ${userTxt} ${ok?'✓':'✗'}
+      </div>
+      ${!ok ? `<div style="color:var(--primary-accent);font-weight:700;margin-top:4px">الإجابة النموذجية: ${corrTxt}</div>` : ''}
+    `;
+    rl.appendChild(item);
+  });
+
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ============ CERTIFICATE FUNCTIONS ============ */
+function showCertificate(){
+  document.getElementById('cert-trainee-name').textContent = traineeName;
+  document.getElementById('cert-score-val').textContent = document.getElementById('score-percentage').textContent;
+  document.getElementById('cert-modal').classList.add('show');
+}
+function closeCert(){
+  document.getElementById('cert-modal').classList.remove('show');
+}
+
+/* ============ PRINT CORRECTION SCALE ============ */
+function printCorrectionScale(){
+  nativePrint();
+}
+</script>
+</body>
+</html>
