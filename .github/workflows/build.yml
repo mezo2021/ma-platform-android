@@ -1,65 +1,25 @@
-name: Build APK
+plugins {
+    id 'com.android.application'
+}
 
-on:
-  workflow_dispatch:
-  push:
-    branches: [ main, master ]
+android {
+    namespace 'com.maplatform.app'
+    compileSdk 34
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+    defaultConfig {
+        applicationId "com.maplatform.app"
+        minSdk 21
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+    }
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v4
-        with:
-          packages: 'platform-tools build-tools;34.0.0 platforms;android-34'
-          log-accepted-android-sdk-licenses: false
-
-      - name: Install Gradle 8.1 manually
-        run: |
-          echo "📥 Downloading Gradle 8.1 from official server..."
-          wget -q --no-check-certificate \
-            "https://services.gradle.org/distributions/gradle-8.1-bin.zip" \
-            -O /tmp/gradle-8.1-bin.zip
-          echo "📦 Extracting Gradle..."
-          sudo mkdir -p /opt/gradle
-          sudo unzip -q -d /opt/gradle /tmp/gradle-8.1-bin.zip
-          echo "✅ Gradle installed at /opt/gradle/gradle-8.1"
-          ls -la /opt/gradle/gradle-8.1/bin/
-          echo "/opt/gradle/gradle-8.1/bin" >> $GITHUB_PATH
-          echo "GRADLE_HOME=/opt/gradle/gradle-8.1" >> $GITHUB_ENV
-
-      - name: Verify Gradle
-        run: |
-          gradle --version
-
-      - name: Build Debug APK
-        run: |
-          gradle assembleDebug --stacktrace --no-daemon --info
-
-      - name: Upload APK
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: MA-Platform-APK
-          path: |
-            app/build/outputs/apk/debug/*.apk
-            app/build/outputs/apk/**/*.apk
-          retention-days: 30
-          if-no-files-found: warn
-
-      - name: Show build outputs
-        if: always()
-        run: |
-          echo "📁 Checking build outputs..."
-          find app/build/outputs -type f 2>/dev/null || echo "No outputs found"
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+}
