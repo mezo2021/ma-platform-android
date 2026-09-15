@@ -1,3 +1,14 @@
+- name: Verify Keystore
+  run: |
+    echo "=== محتوى المجلد ==="
+    ls -la app/*.jks
+    echo "=== حجم الملف ==="
+    wc -c app/ma-platform-key.jks
+    echo "=== محاولة قراءة Keystore ==="
+    keytool -list -keystore app/ma-platform-key.jks \
+      -storepass "M.A@2026#Key" 2>&1 | head -20
+
+- name: Build Signed Release APK
 name: Build Signed APK
 
 on:
