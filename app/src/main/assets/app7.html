@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#0f172a">
+<title>منصة M.A للتدريب والتأهيل المهني | مسابقة قانون العقود العامة (المرسوم 51/2004)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#0f172a; --primary-accent:#1e3a8a; --secondary:#0284c7;
+  --accent:#f59e0b; --bg-color:#eef2f7; --card-bg:#ffffff;
+  --text-dark:#0f172a; --text-muted:#64748b; --success:#10b981;
+  --danger:#ef4444; --border:#dbe3ee; --gold:#fbbf24;
+  --syria-green:#007a3d; --syria-red:#d52b1e;
+  --gradient-gold:linear-gradient(135deg,#fbbf24,#f59e0b,#d97706);
+  --gradient-emerald:linear-gradient(135deg,#007a3d,#10b981);
+  --gradient-brand:linear-gradient(135deg,#0f172a,#1e3a8a,#0284c7);
+  --shadow-sm:0 2px 10px rgba(15,23,42,.06);
+  --shadow-md:0 12px 32px rgba(15,23,42,.10);
+  --shadow-lg:0 26px 60px rgba(15,23,42,.16);
+}
+[data-theme="dark"]{
+  --bg-color:#0a0e1a; --card-bg:#141b2d; --text-dark:#e2e8f0;
+  --text-muted:#94a3b8; --border:#26314c; --primary-accent:#3b82f6;
+  --shadow-sm:0 2px 10px rgba(0,0,0,.4);
+  --shadow-md:0 12px 32px rgba(0,0,0,.5);
+  --shadow-lg:0 26px 60px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Cairo',sans-serif;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg-color); color:var(--text-dark);
+  padding-top:78px; padding-bottom:40px;
+  transition:background .4s,color .4s; overflow-x:hidden; min-height:100vh;
+}
+body::before{
+  content:''; position:fixed; inset:0;
+  background:
+    radial-gradient(circle at 8% 6%,rgba(2,132,199,.14),transparent 42%),
+    radial-gradient(circle at 92% 88%,rgba(16,185,129,.14),transparent 45%),
+    radial-gradient(circle at 50% 50%,rgba(30,58,138,.07),transparent 62%);
+  pointer-events:none; z-index:0;
+}
+.container{max-width:1050px;margin:0 auto;padding:0 18px;position:relative;z-index:1}
+
+/* ================= HEADER ================= */
+.top-header{
+  position:fixed; top:0; left:0; right:0; height:70px;
+  background:linear-gradient(135deg,rgba(15,23,42,.97),rgba(30,41,59,.97));
+  backdrop-filter:blur(20px);
+  color:#fff; display:flex; align-items:center; justify-content:space-between;
+  padding:0 22px; box-shadow:0 8px 32px rgba(0,0,0,.35);
+  z-index:1000; border-bottom:3px solid var(--accent);
+}
+.top-header::after{
+  content:''; position:absolute; bottom:-3px; left:0; right:0; height:3px;
+  background:linear-gradient(90deg,#007a3d,#ffffff,#d52b1e,#000000,#007a3d);
+  background-size:300% 100%; animation:rainbow 8s linear infinite;
+}
+@keyframes rainbow{0%{background-position:0%}100%{background-position:300%}}
+.exam-title-head{
+  font-size:.95rem;font-weight:700;color:#e2e8f0;
+  text-align:center;flex:1;padding:0 15px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.header-right,.header-left{display:flex;align-items:center;gap:10px}
+
+.timer-card{
+  display:none;align-items:center;gap:8px;
+  background:#020617; border:2px solid var(--accent);
+  padding:6px 16px; border-radius:14px;
+  box-shadow:0 0 18px rgba(245,158,11,.35); transition:all .3s;
+}
+.timer-card.warning{border-color:var(--danger);animation:shake .5s infinite;box-shadow:0 0 25px rgba(239,68,68,.6)}
+.timer-card.warning .timer-display{color:#ef4444}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-2px)}75%{transform:translateX(2px)}}
+.timer-icon{font-size:1.15rem;color:var(--accent);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+.timer-display{font-size:1.35rem;font-weight:900;font-family:monospace;color:#fff;letter-spacing:2px}
+
+.icon-btn{
+  width:42px;height:42px;border-radius:12px;border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.08); color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer; font-size:1.15rem; transition:all .25s;
+}
+.icon-btn:hover{background:rgba(245,158,11,.3);transform:scale(1.08)}
+
+/* ================= START SCREEN ================= */
+.start-view{display:block}
+.start-card{
+  position:relative; overflow:hidden;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:26px;
+  padding:62px 30px 32px;
+  max-width:620px; margin:26px auto;
+  box-shadow:var(--shadow-lg);
+  text-align:center;
+}
+.start-card::after{
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(160deg,rgba(2,132,199,.05),transparent 45%,rgba(16,185,129,.05));
+}
+.start-card > *{position:relative;z-index:2}
+
+/* شارة صدقة جارية - زاوية علوية يمنى مائلة */
+.corner-ribbon-wrap{
+  position:absolute; top:0; right:0; width:150px; height:150px;
+  overflow:hidden; pointer-events:none; z-index:7;
+}
+.corner-ribbon{
+  position:absolute; top:32px; right:-48px; width:220px;
+  transform:rotate(45deg);
+  background:linear-gradient(135deg,#065f46,#0d9488,#10b981);
+  color:#fff; text-align:center; padding:8px 0;
+  font-weight:800; font-size:.8rem; letter-spacing:.6px;
+  box-shadow:0 8px 20px rgba(6,95,70,.4);
+  border-top:1px solid rgba(255,255,255,.45);
+  border-bottom:1px solid rgba(255,255,255,.45);
+  text-shadow:0 1px 3px rgba(0,0,0,.3);
+}
+
+.start-brand{
+  display:inline-flex; align-items:center; gap:12px;
+  background:linear-gradient(135deg,rgba(15,23,42,.05),rgba(2,132,199,.08));
+  border:1px solid var(--border);
+  padding:8px 18px 8px 10px; border-radius:50px; margin-bottom:20px;
+}
+.brand-logo{
+  width:44px;height:44px;border-radius:12px;flex-shrink:0;
+  background:var(--gradient-brand); color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:.95rem;letter-spacing:.5px;
+  box-shadow:0 6px 16px rgba(30,58,138,.4);
+}
+.brand-text{text-align:right;line-height:1.35}
+.brand-name{font-size:.92rem;font-weight:900;color:var(--text-dark)}
+.brand-sub{font-size:.72rem;font-weight:700;color:var(--text-muted)}
+
+.flag-container{
+  width:100%; height:104px; border-radius:16px; overflow:hidden;
+  margin-bottom:20px; position:relative;
+  box-shadow:0 12px 34px rgba(0,0,0,.22); border:2px solid var(--border);
+  background:linear-gradient(135deg,#0f172a,#1e293b);
+}
+.flag-svg{width:100%; height:100%;}
+.flag-wave{animation:waveFlag 4.5s ease-in-out infinite; transform-origin:left center;}
+@keyframes waveFlag{
+  0%,100%{transform:rotate(0deg) skewY(0deg)}
+  25%{transform:rotate(.5deg) skewY(-.5deg)}
+  50%{transform:rotate(-.3deg) skewY(.3deg)}
+  75%{transform:rotate(.4deg) skewY(-.4deg)}
+}
+.flag-stars{animation:starsPulse 2.6s ease-in-out infinite; transform-origin:center;}
+@keyframes starsPulse{0%,100%{opacity:.85;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
+
+.main-title{
+  font-size:1.75rem;font-weight:900;margin-bottom:8px;line-height:1.45;
+  background:linear-gradient(135deg,#007a3d,#10b981,#0284c7);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.main-subtitle{font-size:.92rem;color:var(--text-muted);margin-bottom:22px;font-weight:600;line-height:1.7}
+
+/* زر الدخول - اسم المسابقة */
+.start-launch{
+  display:flex; flex-direction:column; align-items:center; gap:5px;
+  width:100%; margin-bottom:22px; padding:20px 20px;
+  border-radius:20px; border:2px dashed rgba(2,132,199,.5);
+  background:linear-gradient(135deg,rgba(2,132,199,.07),rgba(16,185,129,.07));
+  cursor:pointer; transition:all .3s; text-align:center;
+}
+.start-launch:hover{
+  border-color:var(--secondary); transform:translateY(-3px);
+  box-shadow:0 18px 42px rgba(2,132,199,.22);
+  background:linear-gradient(135deg,rgba(2,132,199,.14),rgba(16,185,129,.14));
+}
+.sl-label{font-size:.76rem;font-weight:800;color:var(--text-muted);letter-spacing:.3px}
+.sl-title{font-size:1.32rem;font-weight:900;color:var(--text-dark);line-height:1.4}
+.sl-sub{font-size:.88rem;font-weight:800;color:var(--secondary)}
+.sl-cta{
+  margin-top:10px;font-size:.85rem;font-weight:800;color:#fff;
+  background:var(--gradient-emerald);padding:9px 24px;border-radius:50px;
+  box-shadow:0 8px 20px rgba(0,122,61,.35);
+}
+
+.start-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.meta-item{
+  background:var(--bg-color);border:1px solid var(--border);
+  border-radius:14px;padding:12px 6px;
+}
+.mi-val{display:block;font-size:1.25rem;font-weight:900;color:var(--primary-accent)}
+.mi-lbl{display:block;font-size:.72rem;font-weight:700;color:var(--text-muted);margin-top:2px}
+
+.start-note{
+  font-size:.78rem;font-weight:700;color:var(--text-muted);
+  background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.35);
+  border-radius:12px;padding:10px 14px;line-height:1.7;
+}
+
+/* ================= QUIZ VIEW ================= */
+#quiz-view{display:none}
+
+.info-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.info-chip{
+  background:var(--card-bg);border:1px solid var(--border);
+  border-radius:14px;padding:10px 8px;text-align:center;box-shadow:var(--shadow-sm);
+}
+.info-chip .lbl{display:block;font-size:.7rem;color:var(--text-muted);font-weight:700;margin-bottom:3px}
+.info-chip .val{display:block;font-size:1.25rem;font-weight:900;color:var(--primary-accent)}
+.info-chip.ok .val{color:var(--success)}
+.info-chip.no .val{color:var(--danger)}
+
+.progress-section{
+  background:var(--card-bg);padding:14px 20px;border-radius:16px;
+  margin-bottom:20px;box-shadow:var(--shadow-sm);
+  border:1px solid var(--border);display:flex;align-items:center;gap:16px;
+}
+.progress-bar-container{flex-grow:1;height:12px;background:var(--bg-color);border-radius:10px;overflow:hidden}
+.progress-bar-fill{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,#0284c7,#1e3a8a,#007a3d);
+  transition:width .5s cubic-bezier(.4,0,.2,1);border-radius:10px;
+}
+.progress-text{font-weight:700;color:var(--primary-accent);font-size:.85rem;white-space:nowrap}
+
+.quiz-card{
+  background:var(--card-bg);border-radius:22px;padding:30px;
+  box-shadow:var(--shadow-md); border:1px solid var(--border);
+  margin-bottom:20px; position:relative; overflow:hidden;
+}
+.quiz-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:5px;
+  background:linear-gradient(90deg,#007a3d,#10b981,#f59e0b,#0284c7);
+}
+.question-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:10px;flex-wrap:wrap}
+.question-number{
+  background:var(--gradient-brand);color:#fff;font-weight:800;
+  padding:7px 18px;border-radius:12px;font-size:.86rem;
+}
+.tool-btn-group{display:flex;gap:8px}
+.tool-btn{
+  background:var(--bg-color);border:1px solid var(--border);color:var(--text-dark);
+  padding:7px 13px;border-radius:10px;font-size:.82rem;font-weight:700;
+  cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .2s;
+}
+.tool-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+.tool-btn.active{background:rgba(245,158,11,.18);border-color:var(--accent);color:#b45309}
+
+.question-text{font-size:1.1rem;font-weight:700;color:var(--text-dark);line-height:1.9;margin-bottom:20px}
+
+.options-list{display:flex;flex-direction:column;gap:12px}
+.option-item{
+  display:flex;align-items:center;padding:15px 18px;
+  border:2px solid var(--border);border-radius:14px;
+  cursor:pointer;transition:all .25s ease;
+  background:var(--card-bg);position:relative;
+}
+.option-item:hover{border-color:var(--secondary);background:rgba(2,132,199,.05);transform:translateX(-4px)}
+.option-item.selected{
+  border-color:var(--primary-accent);
+  background:linear-gradient(135deg,rgba(30,58,138,.08),rgba(2,132,199,.08));
+}
+.option-item.correct-reveal{
+  border-color:var(--success)!important;
+  background:linear-gradient(135deg,rgba(16,185,129,.15),rgba(16,185,129,.04))!important;
+}
+.option-item.wrong-reveal{
+  border-color:var(--danger)!important;
+  background:linear-gradient(135deg,rgba(239,68,68,.15),rgba(239,68,68,.04))!important;
+}
+.option-prefix{
+  width:36px;height:36px;border-radius:50%; background:var(--bg-color);
+  color:var(--text-muted); display:flex;align-items:center;justify-content:center;
+  font-weight:800;margin-left:15px;flex-shrink:0;
+}
+.option-item.selected .option-prefix{background:var(--primary-accent);color:#fff}
+.option-item.correct-reveal .option-prefix{background:var(--success);color:#fff}
+.option-item.wrong-reveal .option-prefix{background:var(--danger);color:#fff}
+.option-label{font-size:.98rem;font-weight:600;color:var(--text-dark);line-height:1.65;flex:1}
+
+.feedback-box{
+  margin-top:18px;padding:15px 18px;border-radius:14px;
+  font-weight:700;display:none;align-items:center;gap:12px;line-height:1.7;font-size:.92rem;
+}
+.feedback-box.show{display:flex}
+.feedback-box.correct{background:rgba(16,185,129,.12);border:2px solid var(--success);color:#065f46}
+.feedback-box.wrong{background:rgba(239,68,68,.12);border:2px solid var(--danger);color:#991b1b}
+[data-theme="dark"] .feedback-box.correct{color:#6ee7b7}
+[data-theme="dark"] .feedback-box.wrong{color:#fca5a5}
+
+.controls-card{
+  display:flex;justify-content:space-between;align-items:center;
+  background:var(--card-bg);padding:15px 20px;border-radius:16px;
+  box-shadow:var(--shadow-sm);border:1px solid var(--border);
+  flex-wrap:wrap;gap:10px;
+}
+.nav-grid-section{
+  margin-top:20px;background:var(--card-bg);padding:18px;
+  border-radius:16px;border:1px solid var(--border);box-shadow:var(--shadow-sm);
+}
+.nav-grid-title{font-size:.85rem;font-weight:700;margin-bottom:12px;color:var(--text-muted);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.nav-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(42px,1fr));gap:7px}
+.nav-grid-item{
+  height:42px;border-radius:10px;border:1px solid var(--border);
+  background:var(--bg-color);display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:.85rem;cursor:pointer;position:relative;transition:all .2s;
+}
+.nav-grid-item:hover{transform:translateY(-2px)}
+.nav-grid-item.bookmarked::after{
+  content:'★';position:absolute;top:-3px;right:2px;font-size:.7rem;color:var(--accent);
+}
+.nav-grid-item.answered{background:rgba(2,132,199,.14);color:var(--primary-accent)}
+.nav-grid-item.correct{background:rgba(16,185,129,.2);color:#065f46;border-color:var(--success)}
+.nav-grid-item.wrong{background:rgba(239,68,68,.2);color:#991b1b;border-color:var(--danger)}
+.nav-grid-item.active{border-color:var(--primary-accent);box-shadow:0 0 0 2px var(--primary-accent);font-weight:900}
+
+/* ================= BUTTONS ================= */
+.btn{
+  padding:12px 24px;border-radius:12px;font-weight:700;font-size:.95rem;
+  cursor:pointer;border:none;transition:all .25s;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-primary{background:linear-gradient(135deg,var(--primary-accent),#3b82f6);color:#fff;box-shadow:0 6px 20px rgba(30,58,138,.35)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(30,58,138,.5)}
+.btn-secondary{background:var(--bg-color);color:var(--text-dark);border:1px solid var(--border)}
+.btn-secondary:hover{background:var(--border);transform:translateY(-2px)}
+.btn-gold{background:var(--gradient-gold);color:#0f172a;font-weight:900;box-shadow:0 6px 25px rgba(245,158,11,.45)}
+.btn-gold:hover{transform:translateY(-3px)}
+.btn-emerald{background:var(--gradient-emerald);color:#fff;font-weight:800;box-shadow:0 6px 25px rgba(0,122,61,.45)}
+.btn-emerald:hover{transform:translateY(-3px)}
+.btn-action{background:rgba(2,132,199,.13);color:var(--secondary);border:1px solid var(--secondary)}
+.btn-action:hover{background:var(--secondary);color:#fff}
+.btn.small{padding:8px 16px;font-size:.83rem}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important}
+
+/* ================= RESULT VIEW ================= */
+.result-view{
+  display:none;background:var(--card-bg);border-radius:24px;
+  padding:38px 28px;box-shadow:var(--shadow-lg);
+  border:1px solid var(--border);
+}
+.result-header{
+  font-size:1.75rem;font-weight:900;text-align:center;line-height:1.5;
+  background:linear-gradient(135deg,#0284c7,#1e3a8a,#007a3d);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.result-sub{text-align:center;color:var(--text-muted);font-size:.9rem;font-weight:700;margin-top:6px}
+.result-score-box{
+  display:block;text-align:center;padding:26px 30px;
+  background:rgba(2,132,199,.07); border-radius:24px;
+  border:2px solid var(--secondary); margin:22px auto;max-width:430px;
+}
+.result-score-text{
+  font-size:3.4rem;font-weight:900;line-height:1.1;
+  background:var(--gradient-gold);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.score-fraction{font-weight:700;color:var(--text-muted);margin-top:4px}
+.result-status{
+  font-size:1.15rem;font-weight:900;padding:10px 26px;
+  border-radius:30px;display:inline-block;margin-top:16px;line-height:1.6;
+}
+.status-pass{background:#d1fae5;color:#065f46;border:2px solid var(--success)}
+.status-fail{background:#fee2e2;color:#991b1b;border:2px solid var(--danger)}
+
+.result-details{display:flex;justify-content:center;gap:12px;margin:20px 0;flex-wrap:wrap}
+.detail-chip{padding:10px 18px;border-radius:14px;font-weight:800;font-size:.88rem}
+.detail-chip.green{background:rgba(16,185,129,.15);color:#065f46}
+.detail-chip.red{background:rgba(239,68,68,.15);color:#991b1b}
+.detail-chip.gold{background:rgba(245,158,11,.15);color:#92400e}
+.detail-chip.blue{background:rgba(2,132,199,.15);color:#075985}
+
+/* Certificate issue box */
+.cert-issue-box{
+  max-width:560px;margin:24px auto;padding:24px;
+  background:linear-gradient(135deg,rgba(245,158,11,.09),rgba(217,119,6,.05));
+  border:2px solid rgba(245,158,11,.5);border-radius:20px;text-align:center;
+}
+.cert-issue-box h3{font-size:1.05rem;font-weight:900;color:var(--text-dark);margin-bottom:6px}
+.cert-issue-box p{font-size:.85rem;color:var(--text-muted);font-weight:600;margin-bottom:14px}
+.cert-issue-box input{
+  width:100%;padding:14px;border:2px solid var(--border);border-radius:14px;
+  font-size:1.05rem;text-align:center;outline:none;margin-bottom:14px;
+  background:var(--card-bg);color:var(--text-dark);font-weight:700;transition:all .3s;
+}
+.cert-issue-box input:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(245,158,11,.16)}
+
+.result-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+
+.review-section{margin-top:38px}
+.review-head{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;flex-wrap:wrap;margin-bottom:16px;padding-bottom:12px;
+  border-bottom:2px solid var(--border);
+}
+.review-head h3{font-size:1.1rem;font-weight:900}
+.review-list{display:flex;flex-direction:column;gap:14px;text-align:right}
+.review-item{
+  background:var(--bg-color);padding:16px 18px;border-radius:14px;
+  border-right:5px solid var(--success);line-height:1.8;
+}
+.review-item.bad{border-right-color:var(--danger)}
+.review-q{font-weight:800;font-size:.97rem;margin-bottom:8px}
+.review-ans{font-weight:700;font-size:.9rem}
+.review-ans.ok{color:#065f46}
+.review-ans.no{color:#991b1b}
+.review-correct{font-weight:700;font-size:.9rem;color:var(--primary-accent);margin-top:4px}
+
+/* ================= CERTIFICATE MODAL ================= */
+.cert-modal{
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,.78);
+  backdrop-filter:blur(8px); z-index:3000; align-items:flex-start; justify-content:center;
+  padding:22px; overflow-y:auto;
+}
+.cert-modal.active{display:flex}
+.cert-card{
+  background:#fdfdfb; color:#0f172a; border-radius:14px;
+  max-width:760px; width:100%; position:relative;
+  box-shadow:0 30px 70px rgba(0,0,0,.6);
+  border:1px solid #d8d2c2; overflow:hidden;
+}
+.cert-inner{
+  margin:12px; padding:30px 34px 26px;
+  border:3px double #b8860b; border-radius:8px; position:relative;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(184,134,11,.06),transparent 60%),
+    #fdfdfb;
+}
+.cert-inner::before{
+  content:''; position:absolute; inset:8px; border:1px solid rgba(184,134,11,.4);
+  border-radius:4px; pointer-events:none;
+}
+.cert-head{display:flex;align-items:center;gap:14px;text-align:right}
+.cert-logo{
+  width:58px;height:58px;border-radius:14px;flex-shrink:0;
+  background:linear-gradient(135deg,#0f172a,#1e3a8a,#0284c7);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:1.05rem;box-shadow:0 8px 20px rgba(30,58,138,.35);
+}
+.cert-org{font-size:1.05rem;font-weight:900;color:#0f172a;line-height:1.4}
+.cert-org-sub{font-size:.76rem;font-weight:700;color:#64748b}
+.cert-sep{
+  height:3px;margin:18px 0 20px;border-radius:3px;
+  background:linear-gradient(90deg,#b8860b,#e0b84a,#b8860b);
+}
+.cert-title{
+  text-align:center;font-size:1.55rem;font-weight:900;color:#1e3a8a;
+  letter-spacing:.5px;line-height:1.6;
+}
+.cert-lead{text-align:center;font-size:.92rem;color:#475569;font-weight:700;margin-top:14px}
+.cert-name{
+  display:block;text-align:center;font-size:1.7rem;font-weight:900;color:#b8860b;
+  margin:14px auto 6px;padding:0 26px 6px;border-bottom:2px solid #d8d2c2;
+  max-width:90%;line-height:1.5;
+}
+.cert-body{
+  text-align:center;font-size:.9rem;color:#334155;line-height:2;margin-top:16px;font-weight:600;
+}
+.cert-body b{color:#0f172a}
+.cert-score-line{
+  display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:18px 0 6px;
+}
+.cert-pill{
+  background:rgba(184,134,11,.1);border:1px solid rgba(184,134,11,.45);
+  color:#8a6300;font-weight:800;font-size:.82rem;padding:7px 16px;border-radius:30px;
+}
+.cert-note{
+  margin-top:20px;padding:12px 16px;border-radius:10px;
+  background:rgba(2,132,199,.07);border:1px dashed rgba(2,132,199,.45);
+  font-size:.76rem;color:#334155;line-height:1.9;font-weight:600;text-align:center;
+}
+.cert-footer{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-top:26px;padding-top:16px;border-top:1px solid #e2e8f0;gap:16px;
+}
+.cert-footer > div{font-size:.78rem;color:#64748b;font-weight:700;line-height:1.8;text-align:center}
+.cert-footer .cf-strong{display:block;font-weight:900;color:#0f172a;font-size:.86rem}
+.cert-seal{
+  width:88px;height:88px;border-radius:50%;flex-shrink:0;
+  border:3px double #b8860b;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;color:#8a6300;
+  font-size:.58rem;font-weight:900;line-height:1.3;text-align:center;
+  background:radial-gradient(circle,rgba(184,134,11,.14),transparent 70%);
+  transform:rotate(-8deg);
+}
+.cert-seal span:first-child{font-size:1.1rem;margin-bottom:2px}
+.cert-modal-actions{display:flex;gap:10px;justify-content:center;padding:16px;background:#f5f3ee}
+
+/* ================= TOAST ================= */
+.toast{
+  position:fixed;top:90px;left:50%;transform:translateX(-50%) translateY(-100px);
+  background:var(--card-bg);color:var(--text-dark);padding:13px 26px;
+  border-radius:14px;font-weight:800;font-size:.9rem;box-shadow:0 10px 40px rgba(0,0,0,.25);
+  border:2px solid var(--accent);z-index:5000;opacity:0;visibility:hidden;
+  transition:all .4s;max-width:90vw;text-align:center;
+}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;visibility:visible}
+
+/* ================= FOOTER ================= */
+.app-footer{
+  text-align:center;padding:28px 16px 12px;color:var(--text-muted);
+  font-size:.82rem;font-weight:600;line-height:2;
+}
+.app-footer .foot-brand{
+  font-weight:900;color:var(--text-dark);font-size:.95rem;
+  display:inline-flex;align-items:center;gap:7px;margin-bottom:4px;
+}
+.app-footer .foot-brand .dot{
+  width:9px;height:9px;border-radius:50%;background:var(--gradient-emerald);display:inline-block;
+}
+.app-footer .foot-credit{font-weight:800;color:var(--secondary)}
+.app-footer .foot-tag{font-size:.78rem;letter-spacing:.2px}
+
+/* ================= PRINT ================= */
+.print-area{display:none}
+@page{margin:14mm}
+@media print{
+  body{padding:0!important;background:#fff!important;color:#000!important}
+  body::before{display:none!important}
+  body > *:not(#print-area){display:none!important}
+  #print-area{display:block!important}
+  .print-doc{font-family:'Cairo',sans-serif;direction:rtl;color:#000;line-height:1.9}
+  .print-doc h1{font-size:19px;margin-bottom:6px;text-align:center}
+  .print-doc h2{font-size:15px;margin:14px 0 8px;border-bottom:1.5px solid #000;padding-bottom:4px}
+  .print-doc .p-head{text-align:center;font-size:12px;margin-bottom:4px}
+  .print-doc .p-meta{font-size:12px;margin:8px 0;padding:8px;border:1px solid #999;border-radius:6px}
+  .print-doc .p-item{font-size:12px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dotted #bbb;page-break-inside:avoid}
+  .print-doc .p-q{font-weight:700;margin-bottom:4px}
+  .print-doc .p-ok{color:#0a6b3d;font-weight:700}
+  .print-doc .p-no{color:#a11212;font-weight:700}
+  .print-doc .p-corr{font-weight:700}
+  .cert-print{border:3px double #b8860b;padding:26px;border-radius:8px;text-align:center;direction:rtl}
+  .cert-print .cp-org{font-size:16px;font-weight:900}
+  .cert-print .cp-sub{font-size:11px;color:#555;margin-bottom:14px}
+  .cert-print .cp-title{font-size:20px;font-weight:900;color:#1e3a8a;margin:16px 0}
+  .cert-print .cp-name{font-size:22px;font-weight:900;color:#b8860b;border-bottom:2px solid #999;display:inline-block;padding:0 24px 5px;margin:12px 0}
+  .cert-print .cp-body{font-size:12.5px;line-height:2;margin-top:12px}
+  .cert-print .cp-note{font-size:10.5px;color:#333;border:1px dashed #888;padding:9px;margin-top:16px;border-radius:6px}
+  .cert-print .cp-foot{display:flex;justify-content:space-between;margin-top:28px;font-size:11px}
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width:768px){
+  body{padding-top:72px}
+  .top-header{height:64px;padding:0 12px}
+  .exam-title-head{font-size:.72rem}
+  .timer-display{font-size:1.05rem}
+  .timer-card{padding:5px 10px}
+  .icon-btn{width:38px;height:38px;font-size:1rem}
+  .start-card{padding:72px 18px 26px;border-radius:22px}
+  .corner-ribbon-wrap{width:120px;height:120px}
+  .corner-ribbon{top:26px;right:-40px;width:180px;font-size:.72rem;padding:7px 0}
+  .main-title{font-size:1.4rem}
+  .sl-title{font-size:1.08rem}
+  .info-bar{grid-template-columns:repeat(2,1fr)}
+  .quiz-card{padding:20px}
+  .result-view{padding:24px 16px}
+  .result-score-text{font-size:2.6rem}
+  .cert-inner{padding:20px 16px;margin:8px}
+  .cert-name{font-size:1.3rem}
+  .cert-title{font-size:1.2rem}
+  .cert-footer{flex-direction:column;align-items:center}
+}
+</style>
+
+<script>
+/* ===== جسر الطباعة والصوت الموحّد (Android + Web) ===== */
+function nativePrint(){
+  try{
+    if(window.AndroidAPI && typeof window.AndroidAPI.print === 'function'){
+      window.AndroidAPI.print();
+      return;
+    }
+  }catch(e){}
+  window.print();
+}
+
+function nativeSpeak(text, isFemale){
+  isFemale = isFemale === undefined ? true : isFemale;
+  try{
+    if(window.AndroidAPI && typeof window.AndroidAPI.speak === 'function'){
+      window.AndroidAPI.speak(text, isFemale ? 1 : 0);
+      return true;
+    }
+  }catch(e){}
+  if('speechSynthesis' in window){
+    window.speechSynthesis.cancel();
+    var msg = new SpeechSynthesisUtterance(text);
+    msg.lang = 'ar-SA';
+    msg.rate = 0.9;
+    window.speechSynthesis.speak(msg);
+    return true;
+  }
+  return false;
+}
+
+function nativeStopSpeak(){
+  try{
+    if(window.AndroidAPI && typeof window.AndroidAPI.stopSpeak === 'function'){
+      window.AndroidAPI.stopSpeak();
+      return;
+    }
+  }catch(e){}
+  if('speechSynthesis' in window){
+    window.speechSynthesis.cancel();
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="top-header">
+  <div class="header-right">
+    <button class="icon-btn" id="sound-btn" title="الصوت">🔊</button>
+    <button class="icon-btn" id="theme-btn" title="المظهر">🌙</button>
+  </div>
+  <div class="exam-title-head">منصة M.A للتدريب والتأهيل المهني — مسابقة قانون العقود العامة (المرسوم 51/2004)</div>
+  <div class="header-left">
+    <div class="timer-card" id="timer-card">
+      <span class="timer-icon">⏳</span>
+      <span class="timer-display" id="timer">72:00</span>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ============ START VIEW ============ -->
+  <div class="start-view" id="start-view">
+    <div class="start-card">
+
+      <!-- شارة صدقة جارية (زاوية علوية يمنى مائلة) -->
+      <div class="corner-ribbon-wrap"><div class="corner-ribbon">صدقة جارية</div></div>
+
+      <div class="start-brand">
+        <div class="brand-logo">M.A</div>
+        <div class="brand-text">
+          <div class="brand-name">منصة M.A للتدريب والتأهيل المهني</div>
+          <div class="brand-sub">البيئة التفاعلية المتطورة لإعداد الكوادر</div>
+        </div>
+      </div>
+
+      <div class="flag-container">
+        <svg class="flag-svg" viewBox="0 0 600 300" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#007a3d"/>
+              <stop offset="100%" stop-color="#10b981"/>
+            </linearGradient>
+          </defs>
+          <rect class="flag-wave" x="0" y="0" width="600" height="100" fill="url(#greenGrad)"/>
+          <rect class="flag-wave" x="0" y="100" width="600" height="100" fill="#ffffff"/>
+          <rect class="flag-wave" x="0" y="200" width="600" height="100" fill="#000000"/>
+          <g class="flag-stars">
+            <polygon points="180,150 186,168 205,168 190,178 195,196 180,185 165,196 170,178 155,168 174,168" fill="#d52b1e"/>
+            <polygon points="300,150 306,168 325,168 310,178 315,196 300,185 285,196 290,178 275,168 294,168" fill="#d52b1e"/>
+            <polygon points="420,150 426,168 445,168 430,178 435,196 420,185 405,196 410,178 395,168 414,168" fill="#d52b1e"/>
+          </g>
+        </svg>
+      </div>
+
+      <h1 class="main-title">⚖️ مسابقة قانون العقود العامة</h1>
+      <p class="main-subtitle">المرسوم التشريعي رقم 51 لعام 2004 — برنامج تدريبي وتأهيلي تفاعلي</p>
+
+      <!-- عبارة اسم المسابقة: بالنقر يُفتح التطبيق -->
+      <button class="start-launch" onclick="startExam()">
+        <span class="sl-label">اسم المسابقة التي يجري التدريب عليها</span>
+        <span class="sl-title">مسابقة قانون العقود العامة</span>
+        <span class="sl-sub">المرسوم التشريعي رقم 51 لعام 2004</span>
+        <span class="sl-cta">الدخول إلى بيئة التدريب والاختبار ←</span>
+      </button>
+
+      <div class="start-meta">
+        <div class="meta-item"><span class="mi-val">80</span><span class="mi-lbl">سؤالاً تدريبياً</span></div>
+        <div class="meta-item"><span class="mi-val">72</span><span class="mi-lbl">دقيقة</span></div>
+        <div class="meta-item"><span class="mi-val">75%</span><span class="mi-lbl">درجة النجاح</span></div>
+      </div>
+
+      <div class="start-note">
+        ℹ️ هذا الاختبار بيئة تدريبية تهدف إلى التأهيل المهني وإعداد الكوادر، وتُسحب الأسئلة عشوائياً من البنك التدريبي مع توزيع الخيارات بشكل متنوّع.
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ QUIZ VIEW ============ -->
+  <div id="quiz-view">
+
+    <div class="info-bar">
+      <div class="info-chip"><span class="lbl">إجمالي الأسئلة</span><span class="val" id="info-total">80</span></div>
+      <div class="info-chip"><span class="lbl">تمت الإجابة</span><span class="val" id="info-answered">0</span></div>
+      <div class="info-chip ok"><span class="lbl">إجابات صحيحة</span><span class="val" id="info-correct">0</span></div>
+      <div class="info-chip no"><span class="lbl">إجابات خاطئة</span><span class="val" id="info-wrong">0</span></div>
+    </div>
+
+    <div class="progress-section">
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+      <div class="progress-text" id="progress-text">سؤال 1 من 80</div>
+    </div>
+
+    <div class="quiz-card" id="quiz-card">
+      <div class="question-toolbar">
+        <span class="question-number" id="q-number">سؤال 1</span>
+        <div class="tool-btn-group">
+          <button class="tool-btn" id="tts-btn" onclick="toggleTTS()" title="نطق السؤال">
+            🔊 <span id="tts-label">استمع</span>
+          </button>
+          <button class="tool-btn" id="bookmark-btn" onclick="toggleBookmark()" title="حفظ في المفضلة">
+            ★ <span id="bm-label">إشارة مرجعية</span>
+          </button>
+        </div>
+      </div>
+      <div class="question-text" id="q-text">جاري التحميل...</div>
+      <div class="options-list" id="options-container"></div>
+      <div class="feedback-box" id="feedback-box">
+        <span class="fb-icon" id="fb-icon">✓</span>
+        <span id="fb-text"></span>
+      </div>
+    </div>
+
+    <div class="controls-card">
+      <button class="btn btn-secondary" id="btn-prev" onclick="prevQuestion()" disabled>▶ السابق</button>
+      <button class="btn btn-gold" onclick="confirmSubmit()">🏁 إنهاء الاختبار والتصحيح</button>
+      <button class="btn btn-primary" id="btn-next" onclick="nextQuestion()">التالي ◀</button>
+    </div>
+
+    <div class="nav-grid-section">
+      <div class="nav-grid-title">
+        <span>🗺️ خريطة الأسئلة والتنقل السريع:</span>
+        <span style="font-weight:normal;font-size:.78rem">★ أسئلة مميزة | المفاتيح (1,2,3) للإجابة</span>
+      </div>
+      <div class="nav-grid" id="nav-grid"></div>
+    </div>
+  </div>
+
+  <!-- ============ RESULT VIEW ============ -->
+  <div class="result-view" id="result-view">
+
+    <div class="result-header">📊 تقرير نتيجة الاختبار التدريبي</div>
+    <p class="result-sub">مسابقة قانون العقود العامة — المرسوم التشريعي رقم 51 لعام 2004</p>
+
+    <div class="result-score-box">
+      <div class="result-score-text" id="score-percentage">0%</div>
+      <div class="score-fraction" id="score-fraction">0 / 80</div>
+      <div class="result-status" id="result-status">--</div>
+    </div>
+
+    <div class="result-details">
+      <span class="detail-chip green" id="count-correct">✅ صحيحة: 0</span>
+      <span class="detail-chip red" id="count-wrong">❌ خاطئة: 0</span>
+      <span class="detail-chip blue" id="time-used">⏱️ الزمن المستغرق: --</span>
+      <span class="detail-chip gold" id="best-score">🏅 أعلى نتيجة سابقة: --</span>
+    </div>
+
+    <div class="cert-issue-box" id="cert-issue-box" style="display:none">
+      <h3>🎓 إصدار شهادة إتمام التدريب</h3>
+      <p>اكتب اسمك الثلاثي كما تريد أن يظهر على الشهادة</p>
+      <input type="text" id="trainee-name" placeholder="الاسم الأول — اسم الأب — اسم العائلة" autocomplete="off">
+      <button class="btn btn-gold" onclick="issueCertificate()">🎓 إصدار الشهادة</button>
+    </div>
+
+    <div class="result-actions">
+      <button class="btn btn-primary" onclick="window.location.reload()">🔄 إعادة الاختبار</button>
+      <button class="btn btn-action" onclick="printCorrectionKey()">🖨️ طباعة سلم التصحيح</button>
+      <button class="btn btn-secondary" onclick="shareResult()">📤 مشاركة النتيجة</button>
+    </div>
+
+    <div class="review-section">
+      <div class="review-head">
+        <h3>📋 سلم التصحيح التفصيلي (متاح للطباعة)</h3>
+        <button class="btn btn-action small" onclick="printCorrectionKey()">🖨️ طباعة سلم التصحيح</button>
+      </div>
+      <div class="review-list" id="review-list"></div>
+    </div>
+  </div>
+
+  <footer class="app-footer">
+    <div class="foot-brand"><span class="dot"></span> منصة M.A للتدريب والتأهيل المهني</div>
+    <div class="foot-credit">إعداد وتصميم: أ. مصطفى علي اكر</div>
+    <div class="foot-tag">البيئة التفاعلية المتطورة لإعداد الكوادر</div>
+    <div style="margin-top:8px;font-size:.75rem;opacity:.75">© 2026 — جميع الحقوق محفوظة لمنصة M.A للتدريب والتأهيل المهني</div>
+  </footer>
+</div>
+
+<!-- ============ CERTIFICATE MODAL ============ -->
+<div class="cert-modal" id="cert-modal">
+  <div class="cert-card">
+    <div class="cert-inner">
+      <div class="cert-head">
+        <div class="cert-logo">M.A</div>
+        <div>
+          <div class="cert-org">منصة M.A للتدريب والتأهيل المهني</div>
+          <div class="cert-org-sub">البيئة التفاعلية المتطورة لإعداد الكوادر</div>
+        </div>
+      </div>
+
+      <div class="cert-sep"></div>
+
+      <div class="cert-title">شهادة إتمام تدريب واجتياز اختبار</div>
+      <p class="cert-lead">تشهد منصة M.A للتدريب والتأهيل المهني بأن المتدرّب/المتدرّبة:</p>
+      <div class="cert-name" id="cert-user-name">—</div>
+
+      <p class="cert-body">
+        قد أتمّ بنجاح البرنامج التدريبي في <b>«قانون العقود العامة — المرسوم التشريعي رقم 51 لعام 2004»</b>
+        واجتاز الاختبار التدريبي المخصص له، وفقاً للضوابط والإجراءات المعتمدة في المنصة.
+      </p>
+
+      <div class="cert-score-line">
+        <span class="cert-pill" id="cert-score-pill">النتيجة: —</span>
+        <span class="cert-pill" id="cert-date-pill">التاريخ: —</span>
+        <span class="cert-pill" id="cert-no-pill">رقم الشهادة: —</span>
+      </div>
+
+      <div class="cert-note">
+        ⚖️ <b>تنبيه نظامي:</b> هذه الشهادة صادرة عن منصة M.A للتدريب والتأهيل المهني لأغراض <b>التدريب والتأهيل المهني فقط</b>،
+        وهي تثبت اجتياز اختبار تدريبي داخلي، ولا تُعدّ وثيقة رسمية ولا تمنح أي صفة قانونية أو مهنية أو حقاً مكتسباً لدى أي جهة إدارية أو قضائية،
+        ولا تُغني عن أي إجازة أو ترخيص أو شهادة صادرة عن الجهات المختصة وفق القوانين والأنظمة النافذة.
+      </div>
+
+      <div class="cert-footer">
+        <div>
+          <span class="cf-strong" id="cert-footer-date">—</span>
+          تاريخ الإصدار
+        </div>
+        <div class="cert-seal"><span>🏛️</span><span>M.A<br>ختم المنصة</span></div>
+        <div>
+          <span class="cf-strong">منصة M.A للتدريب والتأهيل المهني</span>
+          الجهة المانحة للشهادة
+        </div>
+      </div>
+    </div>
+
+    <div class="cert-modal-actions">
+      <button class="btn btn-primary" onclick="printCertificate()">🖨️ طباعة الشهادة</button>
+      <button class="btn btn-secondary" onclick="closeCertificate()">إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toast-msg"></span></div>
+
+<!-- منطقة الطباعة -->
+<div class="print-area" id="print-area"></div>
+
+<script>
+/* ============================================================
+   منصة M.A للتدريب والتأهيل المهني
+   إعداد وتصميم: أ. مصطفى علي اكر
+   ============================================================ */
+
+/* ============ STATE ============ */
+let session = [];            // بنك الأسئلة بعد السحب العشوائي وتوزيع الخيارات
+let currentQuestion = 0;
+let userAnswers = [];
+let bookmarked = [];
+let timerInterval = null;
+let timeLeft = 72 * 60;      // 72 دقيقة
+const EXAM_SECONDS = 72 * 60;
+let soundEnabled = true;
+let examStartTime = null;
+let lastResult = { pct: 0, correct: 0, total: 0 };
+let traineeName = '';
+
+const PASS_PERCENT = 75;
+
+/* ============ AUDIO ============ */
+let audioCtx = null;
+function initAudio(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); }
+function playTone(freq, dur=0.12, type='sine', vol=0.12){
+  if(!soundEnabled) return;
+  try{
+    initAudio();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = type; osc.frequency.value = freq;
+    gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.start(); osc.stop(audioCtx.currentTime + dur);
+  }catch(e){}
+}
+const SFX = {
+  click:  ()=>playTone(600,.06,'sine',.07),
+  correct:()=>{playTone(780,.1);setTimeout(()=>playTone(1040,.15),95)},
+  wrong:  ()=>{playTone(300,.15,'sawtooth',.1);setTimeout(()=>playTone(200,.22,'sawtooth',.1),120)},
+  done:   ()=>{[523,659,784].forEach((f,i)=>setTimeout(()=>playTone(f,.22,'sine',.16),i*150))}
+};
+
+/* ============ THEME & SOUND ============ */
+const themeBtn = document.getElementById('theme-btn');
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme', t);
+  themeBtn.textContent = t==='dark' ? '☀️' : '🌙';
+  localStorage.setItem('contracts_theme', t);
+}
+setTheme(localStorage.getItem('contracts_theme') || 'light');
+themeBtn.onclick = ()=>{
+  SFX.click();
+  setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');
+};
+
+const soundBtn = document.getElementById('sound-btn');
+soundBtn.onclick = ()=>{
+  soundEnabled = !soundEnabled;
+  soundBtn.textContent = soundEnabled ? '🔊' : '🔇';
+  if(soundEnabled) SFX.click();
+};
+
+/* ============ TOAST ============ */
+function showToast(msg){
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._to);
+  t._to = setTimeout(()=>t.classList.remove('show'), 2400);
+}
+
+/* ============ UTILS ============ */
+function shuffle(a){
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+function todayStr(){
+  const d = new Date();
+  return d.getFullYear() + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + String(d.getDate()).padStart(2,'0');
+}
+
+/* ============================================================
+   بنك الأسئلة (80 سؤالاً) — محفوظ بالكامل دون أي حذف
+   ============================================================ */
+const questionsData = [
+{q:"1. أرادت شركة إنشاءات تابعة لوزارة الدفاع التقديم على مناقصة بناء مشفى عام لوزارة الصحة. هل يطبق عليها نظام العقود 51 لعام 2004؟",options:["نعم، لأن الشركات الإنشائية لوزارة الدفاع غير مستثناة من أحكام النظام","لا، لأن كافة مؤسسات وشركات وزارة الدفاع مستثناة مطلقاً دون استثناء","يطبق عليها فقط في حال كان الشراء بطريقة الشراء المباشر"],ans:0},
+{q:"2. أصدرت جهة عامة خاضعة للمرسوم 51 قراراً بالاستناد لنظام عقود خاص قديم لديها. ما الموقف القانوني لهذا الإجراء؟",options:["صحيح، لأن الأنظمة الخاصة المقدمة تسري على المشاريع السابقة واللاحقة","باطل، لأن المادة 4 تنهي العمل بجميع أنظمة العقود السابقة للجهات الخاضعة له","صحيح بشرط الحصول على موافقة استثنائية من رئيس مجلس الوزراء"],ans:1},
+{q:"3. تعاقدت جهة عامة مع متعهد بناءً على مناقصة تم الإعلان عنها رسمياً قبل يومين من تاريخ نفاذ المرسوم 51. أي قانون يسري على هذا العقد؟",options:["نظام العقود الجديد (المرسوم 51) لوجود مصلحة عامة","النظام العقدي الذي كان نافذاً عند تاريخ الإعلان عن المناقصة","يُخَيَّر المتعهد بين النظام القديم والمرسوم 51"],ans:1},
+{q:"4. في إحدى الوزارات، قام «آمر الصرف» بتسمية نفسه رئيساً للجنة المناقصات. كيف يُقيَّم هذا القرار قانوناً؟",options:["غير جائز قانوناً، حيث يمنع النظام آمر الصرف من رئاسة لجنة المناقصة","جائز، شريطة أن يحوز آمر الصرف على شهادة جامعية ذات صلة","جائز، لأن آمر الصرف هو المسند إليه صلاحية عاقد النفقة بالأساس"],ans:0},
+{q:"5. تم إرساء المناقصة على أحد العارضين وصدر قرار الإحالة لكن لم يصدر أمر المباشرة بعد. ما الصفة القانونية لهذا العارض؟",options:["متعهد أصيل نافذ العقد بحقه","متعهد مرشح","عارض عادي تنتهي مسؤوليته بمجرد الإرساء"],ans:1},
+{q:"6. أثناء تنفيذ عقد توريد، نشب خلاف حول مدى إلزامية مخطط فني ملحق بالدفاتر. هل يعتبر المخطط جزءاً من العقد؟",options:["لا، العقد يقتصر فقط على دفتر الشروط العامة والخاصة","نعم، مفهوم العقد يشمل دفاتر الشروط والمواصفات والمصورات والجداول كافة","نعم، ولكن فقط إذا كان موقعاً من وزير المالية"],ans:1},
+{q:"7. قامت لجنة المناقصة بحساب مدة إعلان مناقصة تتضمن 15 يوماً، واحتسبت ضمنها يوم نشر الإعلان ويوم الجلسة. هل الاحتساب صحيح؟",options:["صحيح، المدة تحسب كاملة من تاريخ النشر وحتى تاريخ الجلسة","غير صحيح، لا يحسب يوم الإعلان ولا يوم المناقصة ضمن مدة الإعلان","غير صحيح، يحسب يوم الإعلان ويستبعد يوم المناقصة فقط"],ans:1},
+{q:"8. تعذر على جهة عامة تحديد جدول أوزان وكميات التوريد بدقة في دفاتر الشروط الخاصة. ما التكليف القانوني للعارض؟",options:["يتم الغاء المناقصة فوراً والتحول إلى الشراء المباشر","يجوز تحميل العارض مسؤولية وتكلفة حساب الكميات وفق الشروط الخاصة","تتحمل الجهة العامة خطأ الحساب وتزودهم بأسعار مقطوعة ثابتة"],ans:1},
+{q:"9. قدم عارض وثائقه في ثلاثة أظرف داخل ظرف رابع مغلق في جلسة توريد أجهزة طبية معقدة الفنيات. ما نوع هذه الطريقة؟",options:["مناقصة عمومية بظرفين","طلب عروض","شراء مباشر عن طريق لجنة"],ans:1},
+{q:"10. قدم عارض طلب تعديل على أسعاره البرقية بعد تسليم العرض وقبل فتح الأظرف وسُجل الطلب بالديوان. هل يُقبل التعديل؟",options:["يُقبل، طالما تم تسجيله في الديوان قبل موعد الجلسة","لا يجوز سحب العرض أو تعديله إطلاقاً بعد تسجيله رسميًا","يُقبل التعديل بشرط تقديم كفالة إضافية خلال 24 ساعة"],ans:1},
+{q:"11. تقدم شخص طبيعي لا يملك سجلاً تجارياً لمناقصة توريد مواد مكتبية لجهة عامة. ما قرار لجنة المناقصة بشأن عرضه؟",options:["رفض العرض لعدم تحقق شرط القيد في السجل التجاري","قبول العرض بشرط استخرج السجل التجاري قبل صرف الفاتورة","قبول العرض إذا كان السعر المقدم هو الأرخص"],ans:0},
+{q:"12. تضمن ملف عارض شهادة غير محكوم صادرة قبل أربعة أشهر من تاريخ تقديم العرض. هل تُقبل؟",options:["تُقبل، طالما أنها صادرة خلال نفس العام التقويمي","لا تقبل، لا يجوز قبول الوثائق الرسمية التي مضى على صدورها أكثر من 3 أشهر","تُقبل إذا أرفق معها إقراراً خطياً بعدم أسبقية الجرم"],ans:1},
+{q:"13. قدم أحد الموردين عرضين مختلفين بأسعار ومواصفات مختلفة لنفس المناقصة باسمه الصريح. ما الإجراء المتخذ؟",options:["يتم إلغاء العرضين واعتباره غير مؤهل","يعتمد العرض الأسبق تسجيلاً في ديوان الجهة العامة فقط","تجري القرعة بين العرضين للاختيار بينهما"],ans:1},
+{q:"14. أرادت مؤسسة عامة شراء قطع غيار محصورة بشركة عامة أخرى منتجة لها. ما الطريق القانوني الأمثل؟",options:["إجراء مناقصة محصورة بين القطاع العام والخاص","الشراء المباشر من الجهة العامة المنتجة أو المحصورة ببيعها","طلب عروض دولي مقفول"],ans:1},
+{q:"15. احتاج آمر الصرف لشراء مستلزمات عاجلة جداً بقيمة 35 ألف ليرة سورية. هل يلزمه تشكيل لجنة شراء مباشر؟",options:["نعم، الشراء المباشر يتطلب لجنة دائماً بصرف النظر عن المبلغ","لا، يحق لآمر الصرف تأمين احتياجات حتى 50 ألف ليرة خارج لجان الشراء","نعم، لأن المبلغ يتجاوز السقف المحدد بـ 10 آلاف ليرة"],ans:1},
+{q:"16. تضمن عرض وكيل بالعمولة نصاً يقضي بتأجيل بيان نسبة عمولته لحين توقيع العقد. ما موقف اللجنة من العرض؟",options:["قبول العرض مع فرض نسبة استقطاع حكيمة","رفض العرض للالتزام بذكر نسبة العمولة الصافية صراحة بالعرض","توقيع العقد ودفع العمولة بالدولار الأمريكي حكماً"],ans:1},
+{q:"17. شكلت جهة عامة لجنة مناقصة رئيسها موظف يحمل شهادة ثانوية عامة ولديه خبرة 25 سنة. ما مدى صحة تشكيل اللجنة؟",options:["صحيح للخبرة الطويلة التي تعوض المؤهل العلمي","باطل، يشترط حكماً في رئيس لجنة المناقصة حيازة شهادة جامعية","صحيح بشرط موافقة الجهاز المركزي للرقابة المالية"],ans:1},
+{q:"18. قامت لجنة المناقصة بإرساء العقد، لكن آمر الصرف رأى عدم ملاءمة السعر فقام بتعديل اسم الفائز من تلقاء نفسه. ما الحكم؟",options:["تعديل صحيح لأنه السلطة صاحبة الحق بالعقد","باطل، لا يحق لآمر الصرف تعديل النتيجة وله إلغاؤها بقرار مبرر خطياً","صحيح بشرط تخفيض السعر بنسبة 10%"],ans:1},
+{q:"19. أعلنت وزارة عن مسابقة لإعداد تصاميم معماريّة لمبنى حكومي. من هي الجهة المختصة بتسمية لجنة الحكام؟",options:["آمر الصرف في المبنى","الوزير المختص","نقابة المهندسين حصراً"],ans:1},
+{q:"20. رأت لجنة الحكام بالمسابقة الهندسية أن جميع المشاريع المقدمة لا ترتقي للمستوى المطلوب. هل يحق لها التوصية بعدم منح الجوائز؟",options:["لا، منح الجائزة الأولى إجباري لمن حاز أعلى النقاط","نعم، يحق للجنة الحكام التوصية بعدم منح الجوائز إذا لم تلبي العروض الشروط","نعم، بشرط توزيع القيمة المادية مناصفة بين أول ثلاثة متنافسين"],ans:1},
+{q:"21. تساوت ثلاثة عروض في الأسعار والمواصفات الفنية، لكن أحد العارضين قدم مدة تنفيذ أقل. كيف يتم التفضيل؟",options:["تفضل المدة الأقصر حكماً عند تساوي كافة الأمور الأخرى","تجرى القرعة المباشرة بينهم فوراً","يعاد الإعلان عن مناقصة جديدة لتخفيض السعر"],ans:0},
+{q:"22. أرسل موارد عرضه بالبريد المسجل ووصل لديوان الجهة العامة بعد ساعتين من انتهاء الدوام الرسمي لليوم المحدد. ما الحكم؟",options:["يُقبل طالما أُرسل بالبريد قبل الموعد","يرفض العرض لوصوله وتسجيله بعد انتهاء ساعات الدوام الرسمي للموعد","يعرض على وزير المالية للبت فيه"],ans:1},
+{q:"23. نسي عارض إرفاق كفالته المؤقتة وطلب مهلة 24 ساعة لاستكمالها لحصول خطأ مادي. هل يُسمح له؟",options:["يُسمح له خلال مهلة لا تتجاوز 3 أيام","لا يجوز استكمال الكفالة المؤقتة والأسعار وجداول التحليل مطلقاً","يُسمح له إذا دفع غرامة مالية قدرها 1%"],ans:1},
+{q:"24. كم هي المدة القصوى القانونية التي يبقى فيها المتعهد المرشح مرتبطاً بعرضه بانتظار أمر المباشرة؟",options:["ثلاثة أشهر","ستة أشهر","سنة كاملة"],ans:1},
+{q:"25. في طلب العروض، فتحت اللجنة الظرف الفني ووجدت داخله جدولا بالأسعار المالية المقدمة. ما الإجراء؟",options:["تستبعد اللجنة العرض الفني فوراً لمخالفته أصول التقديم","تحيل العرض المالي مباشرة لآمر الصرف للبت به","تغرم العارض 5% وتستمر بدراسة العرض"],ans:0},
+{q:"26. أعلنت جهة عامة عن مناقصة داخلية حالة استعجال شديد. ما هي أقل مدة قانونية للإعلان؟",options:["3 أيام","5 أيام","10 أيام"],ans:1},
+{q:"27. أعلنت جهة عامة عن مناقصة خارجية بحالة استعجال قصوى لمدة 10 أيام. هل الإجراء صحيح؟",options:["صحيح، حالة الاستعجال تخفض المهل الخارجية لـ 10 أيام","باطل، المناقصة الخارجية تبقى مدتها 25 يوماً ولا تخفض بالاستعجال","صحيح بشرط النشر في صحيفتين أجنبيتين"],ans:1},
+{q:"28. صدر قرار الإحالة للمتعهد المرشح وأبلغ به بالبرقية المسجلة. متى ينفذ قرار التبليغ؟",options:["بعد 15 يوماً من الاستلام الفعلي","من تاريخ أسبق الإرسال بالوسائل المحددة بالنص","من تاريخ نشر القرار في النشرة الرسمية"],ans:1},
+{q:"29. بلغت قيمة التوريد التقديرية 10 ملايين ليرة. كم تكون الكفالة النهائية المطلوبة عادةً عند توقيع العقد؟",options:["5% (500 ألف ليرة)","10% (مليون ليرة)","20% (مليونان ليرة)"],ans:1},
+{q:"30. تبلغ المرشح قرار الإحالة ورفض توقيع العقد خلال مدة 30 يوماً دون سبب مشروع. ما الإجراء المتخذ بحقه؟",options:["منحه مهلة إضافية مدتها 60 يوماً تلقائياً","مصادرة الكفالة المؤقتة والمطالبة بالتعويض وتنفيد العقد على حسابه","إلغاء المناقصة ودفع أجور الإعلان فقط"],ans:1},
+{q:"31. أراد موظف يعمل في نفس المحافظة التي تقام فيها المناقصة التقدم بعرض لشخصه. هل يحق له ذلك؟",options:["يحق له إذا قدم أعلى سعر وتأمين","توجد قيود حازمة تمنع مشاركة الموظف العام في تعاقدات جهته/محافظته","يحق له بشرط أخذ إجازة بلا أجر أثناء التنفيذ"],ans:1},
+{q:"32. أين ينشر إعلان المناقصة العامة وفق النظام؟",options:["في صحيفة محلية واحدة فقط","في النشرة الرسمية للإعلانات وصحيفة يومية وعلى لوحة الإعلانات بالجهة","في الموقع الإلكتروني للوزارة دون الحاجة للصحف الورقية"],ans:1},
+{q:"33. قدم عارض تحفّظاً على بند بالدفاتر، لكنه قام بإلغاء التحفظ خطياً بجلسة علنية قبل فتح أسعار العروض. هل يُقبل؟",options:["لا يُقبل أية تحفظات حتى لو تم الغاؤها","يُقبل العرض إذا ألغي التحفظ قبل إعلان الأسعار وأُكد خطياً","يرفض العرض ويغرم بمصادرة نصف التأمين"],ans:1},
+{q:"34. وجه أحد العارضين استفساراً فنياً للجهة العامة فعدلت الشروط. كيف يجب على الجهة التصرف تجاه بقية العارضين؟",options:["تبليغ العارض المستفسر فقط للتكتم على الفنيات","منح جميع المتنافسين فرصة متساوية وإبلاغهم بالتوضيحات والتعديلات","إلغاء المناقصة فوراً بسبب غموض دفتر الشروط"],ans:1},
+{q:"35. انقضت مدة ارتباط المتعهد المرشح (6 أشهر) ولم يصدر أمر المباشرة. ما حقه القانوني؟",options:["الالتزام الفوري بالتنفيذ تحت طائلة الحرمان","يحق له الانسحاب واسترداد كفالاته وفق الإجراء والمهلة المحددة","مضاعفة قيمة الكفالة النهائية تلقائياً"],ans:1},
+{q:"36. تقدمت جهة عامة بعرض لمناقصة أعلنت عنها جهة عامة أخرى. هل تُعفى من تقديم بعض وثائق الاشتراك؟",options:["لا، تتساوى مع شركات القطاع الخاص تماماً بجميع الوثائق","نعم، تُعفى الجهات العامة من بعض وثائق الاشتراك الرسمية وفق النظام","تُعفى فقط من التوقيع على العقد"],ans:1},
+{q:"37. تقدم للمناقصة شخص محكوم بسنة سجن بجرم اختلاس ولم يرد إليه اعتباره. ما موقف اللجنة؟",options:["قبوله إذا قدم كفالة مضاعفة","رفض مشاركته لعدم توفر شرط الأهلية ونزاهة المشارك","قبوله بشرط تفويض شخص آخر بالتوقيع"],ans:1},
+{q:"38. قدم المتعهد المرشح الكفالة النهائية بعد 40 يوماً من التبليغ بدلاً من 30 يوماً دون عذر. ما الأثر القانوني؟",options:["يُعتبر مستنكفاً وتُصادر كفالته المؤقتة وتتخذ الإجراءات بحقه","تُقبل الكفالة مع فرض غرامة مالية بسيطة 0.5%","يمدد له تلقائياً لـ 90 يوماً"],ans:0},
+{q:"39. أثناء تنفيذ العقد، رغبت الجهة العامة بتعديل كميات البنود بنفس الأسعار المعقودة. ما هي الحدود والنسب القانونية المسموحة للتعديل؟",options:["يحق للجهة التعديل زيادة أو نقصاناً حتى 30% لكل بند، وبشرط ألا تتجاوز 25% من إجمالي قيمة العقد","يحق للجهة التعديل زيادة أو نقصاناً حتى 10% لكل بند و15% من مجموع العقد فقط","غير جائز تعديل أية بنود بالزيادة أو النقصان إلا بملحق عقد وموافقة الوزير المختص"],ans:0},
+{q:"40. أرادت الجهة إنقاص بند الحفريات بنسبة 35% من العقد. هل يحق للمتعهد الاعتراض؟",options:["لا يحق له الاعتراض مطلقاً","يحق له الاعتراض لأن نسبة الإنقاص تتجاوز الحد المسموح به (30% للبند)","يحق له المطالبة بمضاعفة أسعار البنود الأخرى"],ans:1},
+{q:"41. توقف المتعهد عن تنفيذ المشروع بعد إنذاره رسمياً. قامت الجهة بطرح العمل على حساب المتعهد. ما معنى هذا؟",options:["إعفاء المتعهد القديم وتحمل الجهة كافة التكاليف","تنفيذ الأعمال بواسطة جهة أخرى مع تحميل المتعهد المقصر الفروق المالية والكفالات","تحويل المشروع إلى مسابقة معمارية"],ans:1},
+{q:"42. أنجز المتعهد أعمال البناء وسلّمها للجهة العامة للتحقق من المواصفات. ما نوع هذا الاستلام؟",options:["استلام نهائي قطعي","استلام مؤقت تبدأ معه مدة الضمان","تصفية مالية نهائية"],ans:1},
+{q:"43. انقضت فترة الضمان والصيانة وتم إصلاح العيوب كاملة. ما الإجراء المترتب تجاه الكفالة النهائية؟",options:["مصادرتها لصالح الخزينة العامة","إجراء الاستلام النهائي ورد الكفالة النهائية للمتعهد","احتجاز الكفالة لمدة 5 سنوات إضافية"],ans:1},
+{q:"44. لم ينص العقد على تحديد فترة الضمان والتوريد للآلات. ما هي المدة الافتراضية القانونية للضمان؟",options:["ستة أشهر","سنة واحدة تبدأ من تاريخ الاستلام المؤقت","ثلاث سنوات"],ans:1},
+{q:"45. فشلت المناقصة العامة مرتين متتاليتين لعدم تقدم عارضين. ما الطرق البديلة الجائزة للتعاقد؟",options:["الشراء المباشر حصراً دون حدود","جواز اللجوء إلى طريقة التعاقد بالتراضي","إلغاء المشروع نهائياً من الموازنة"],ans:1},
+{q:"46. تأخر المتعهد عن التوريد لمدة 20 يوماً بدون عذر مشروع. كيف تعالج الغرامة التأخيرية؟",options:["فرض غرامة يومية وفق المعامل بالعقد بسقف لا يتجاوز عادة 20% من القيمة","سجنه فوراً لمدة شهرين","مصادرة كامل ممتلكاته الشخصية"],ans:0},
+{q:"47. تنازل المتعهد عن العقد لشركة أخرى بعقد جانبي دون علم الجهة العامة. ما الحكم؟",options:["التنازل صحيح طالما الشركة الجديدة مؤهلة","التنازل باطل ويعتبر إخلالاً جسيماً يوجب فسخ العقد والتنفيذ على حسابه","صحيح بشرط دفع رسم طابع إضافي"],ans:1},
+{q:"48. طلبت الشركة العامة سلفة مالية بنسبة 15% لمباشرة العمل. ما الشرط الأساسي لمنح هذه السلفة؟",options:["تعهد خطي بالصرف","تقديم كفالة مصرفية غير مشروطة تعادل 100% من قيمة السلفة","تقديم رهنية عقارية"],ans:1},
+{q:"49. وقع خلاف قضائي حول تفسير بند مالي في العقد بين المتعهد والوزارة. ما هي المحكمة المختصة؟",options:["محكمة البداية المدنية","القضاء الإداري (مجلس الدولة في سورية)","محكمة التموين والجرائم الاقتصادية"],ans:1},
+{q:"50. ضرب زلزال مفاجئ منطقة المشروع مما أدى لتوقف العمل وتلف التوريدات. ما تصنيف هذا الحدث؟",options:["خطأ مهني من المتعهد","ظرف قاهر يعفي المتعهد من غرامات التأخير بشروط الإبلاغ المحددة","إهمال يتوجب مصادرة التأمينات"],ans:1},
+{q:"51. ارتفعت أسعار المازوت والحديد بقرارات رسمية حكومية أدت لزيادة التكاليف. متى يحق للمتعهد المطالبة بفروق الأسعار؟",options:["في كافة العقود تلقائياً وبدون شروط","إذا نص العقد أو النظام صراحة على إمكانية تعديل الأسعار وفق معادلات رسمية","لا يحق له المطالبة مطلقاً تحت أي ظرف"],ans:1},
+{q:"52. توفي المتعهد الفرد أثناء مرحلة تنفيذ البناء. ما هو الخيار القانوني المتاح للجهة العامة؟",options:["إلزام الورثة القاصرين بالتنفيذ فوراً","فسخ العقد دون تعويض أو الموافقة على استمرار الورثة المؤهلين بالتنفيذ","مصادرة كافة الأموال المنقولة للمتعهد المتوفى"],ans:1},
+{q:"53. قررت الوزارة إلغاء المشروع الطرق للمصلحة العامة قبل اكتماله. ما حقوق المتعهد في هذه الحالة؟",options:["لا يستحق أي مبلغ مالياً","تعويض عادل عن النفقات والأضرار الفعلية دون التعويض عن الأرباح الفائتة","تقاضي كامل قيمة العقد مع الأرباح المفترضة"],ans:1},
+{q:"54. ما الفرق الجوهري بين دفتر الشروط العامة ودفتر الشروط الخاصة؟",options:["العامة تحدد القواعد القانونية والتنظيمية العامة، والخاصة تحدد الفنيات والأسعار والمواعيد للفرع","العامة تُكتب باللغة العربية والخاصة باللغات الأجنبية","لا يوجد أي فرق بينهما وهما مسميان لشيء واحد"],ans:0},
+{q:"55. ثبت ارتكاب أحد المتعهدين لعملية رشوة وتزوير في إحدى المناقصات. ما العقوبة المسلكية العقدية بحقه؟",options:["تنبيهه خطياً فقط","حرمانه من التعاقد مع الجهات العامة بقرار من الوزير أو رئيس مجلس الوزراء","تخفيض أسعار عروضه القادمة بنسبة 50%"],ans:1},
+{q:"56. أتم المتعهد عمله وتأخرت الجهة العامة عن صرف مستحقاته المالية الجاهزة دون سبب لمدة 8 أشهر. ما حقه؟",options:["الانسحاب من المشروع ومصادرة أجهزة الدولة","المطالبة بالفائدة القانونية عن التأخير وفق الشروط المحددة بالنظام","لا يحق له المطالبة بأي شيء سوى الانتظار"],ans:1},
+{q:"57. أين يجب على العارض الأجنبي تحديد موطنه المختار وفق أحكام القانون؟",options:["في بلد العارض الأصلي فقط","موطن مختار في سورية حكماً وفق الأحكام","في أي دولة من دول الإتحاد الأوروبي"],ans:1},
+{q:"58. أين تعقد جلسات المناقصة وفض الأظرف في الجهات العامة؟",options:["في مكتب الوزير المغلق بصفة سرية","في المكان والزمان المحددين وبجلسة علنية","عن طريق المكاتب البريدية"],ans:1},
+{q:"59. في حال وجود خطأ في كتابة تفقيط السعر بالحروف والأرقام بالعرض المالي. أيها يُعتمد؟",options:["الأرقام دائماً","التفقيط بالحروف هو المعتمد عند الاختلاف","يلغى العرض فوراً للغموض"],ans:1},
+{q:"60. لماذا يُفضل التوريد بأسلوب \"المناقصة\" على الشراء المباشر في المشتريات الكبيرة؟",options:["لأن المناقصة تتيح تحديد شروط ومواصفات موحدة وتحقق المنافسة والوفر المالي","لأن المناقصة لا تتطلب تقديم أي تأمينات مصرفية","لأن المناقصة تتم خلال 24 ساعة فقط"],ans:0},
+{q:"61. هل يجوز الشراء بالتراضي للمواد والآلات ذات الماركات المحصورة التي لا يملكها إلا وكيل واحد؟",options:["نعم، يجوز التعاقد بالتراضي لحصر مصدر المادة أو الماركة","لا، يجب الإعلان عن مناقصة عامة وتكليف الوكيل بالتقديم","يجوز بشرط إشراك 3 وكلاء وهميين"],ans:0},
+{q:"62. متى يحق للعارض المطالبة باسترداد كفالته المؤقتة عند تقديم العروض؟",options:["فور انتهاء جلسة فض الأظرف للعارضين الذين لم ترسُ عليهم المناقصة","بعد مرور خمس سنوات من المشاركة","لا تُرد الكفالة وتصادر لصالح الدولة"],ans:0},
+{q:"63. أرادت جهة عامة شراء عقار محدد بذاته لإنشاء مقر لها. ما هي طريقة التعاقد المقررة؟",options:["المناقصة العامة","التعاقد بالتراضي أو الشراء المباشر لخاصية العقار المحددة","طلب عروض دولي"],ans:1},
+{q:"64. ما هو التركيب المستنداتي للأظرف المغلقة في المناقصات العادية؟",options:["ظرف واحد مفتوح","ظرفان مغلقان يوضعان في ظرف ثالث خارجي","خمسة أظرف منفصلة"],ans:1},
+{q:"65. هل يملك العارض الحق في تقديم عرض يتضمن خيارات متعددة (بدائل فنية)؟",options:["نعم، إذا سمحت دفاتر الشروط الخاصة بذلك صراحة","لا، يمنع تقديم البدائل والخيارات مطلقاً تحت طائلة الرفض","نعم، في العقود الإنشائية دون التوريدات"],ans:0},
+{q:"66. ما هي وظيفة \"لجنة الفحص والتقييم الفني\" في طلب العروض؟",options:["فتح الأظرف المالية وحساب الأرباح","دراسة العروض الفنية وضبط مطابقتها للشروط وتحديد الأسس قبل فتح المالي","توقيع العقد النهائي مع المتعهد"],ans:1},
+{q:"67. أخل المتعهد بتنفيذ جزء بسيط لا يؤثر على انتفاع المشروع. هل يجوز الاستلام الجزئي؟",options:["نعم، يجوز الاستلام الجزئي للأجزاء الجاهزة للاستعمال والمستقلة","لا يجوز إلا باستلام كامل المشروع دفعة واحدة","يعتبر العقد فسخاً تلقائياً"],ans:0},
+{q:"68. ما هو السقف المالي المسموح لآمر الصرف بتأمين الاحتياجات عندها خارج اللجان؟",options:["10 آلاف ليرة سورية","50 ألف ليرة سورية","100 ألف ليرة سورية"],ans:1},
+{q:"69. من يضمن الأخطاء والعيوب الخفية التي تظهر في المبنى بعد الاستلام النهائي؟",options:["الجهة العامة المالكة","المتعهد والمهندس المصمم/المشرف وفق أحكام الضمان العشرين بالقانون المدني","العمال المشاركون في البناء"],ans:1},
+{q:"70. متى تصبح الإحالة نافذة وحازمة في حق المتعهد المرشح؟",options:["بمجرد مصادقة السلطة المختصة وتبليغ المتعهد رسمياً","بمجرد توقيع لجنة المناقصة على المحضر","بعد النشر في الصحف لمدة شهر"],ans:0},
+{q:"71. ما الهدف من تقديم \"جدول تحليل الأسعار\" مع العرض في العقود الإنشائية الكبيرة؟",options:["زيادة الأوراق الإدارية فقط","معرفة تفاصيل تكلفة المواد والأجور لحساب التعديلات وفروق الأسعار بدقة","إلغاء الكفالة النهائية"],ans:1},
+{q:"72. إذا تأخر المتعهد عن تنفيذ التزاماته بسبب يعود للجهة العامة نفسها. هل تفرض عليه غرامات؟",options:["نعم، تفرض الغرامة ثم يستردها قضائياً","لا تفرض الغرامة ويحق له المطالبة بتمديد مدة التنفيذ بقدر فترة التأخير","تضاعف مدة العقد تلقائياً"],ans:1},
+{q:"73. هل يجوز في جلسة المناقصة قبول عرض ورد بعد الوقت المحدد وقبل فتح الأظرف بأوان؟",options:["نعم، طالما الجلسة لم تكتمل","لا، أي عرض يقدم بعد انقضاء الوقت المحدد للتقديم يعتبر مفقود الشرط ويرفض","يعود القرار لتقدير العارضين الآخرين"],ans:1},
+{q:"74. ما الموقف القانوني إذا انسحب المتعهد المرشح قبل انقضاء فترة ارتباطه بعرضه؟",options:["يحق له الانسحاب مجاناً","تُصادر تأميناته المؤقتة ويتحمل مسؤولية الفرق المالي عند التنفيذ على حسابه","يسجن لمدة 10 أيام"],ans:1},
+{q:"75. قامت لجنة الشراء المباشر بشرائه توريدات دون الحصول على عدة عروض خطية رغم توفرها. هل تصرفها صحيح؟",options:["صحيح، الشراء المباشر لا يتطلب الحصول على أكثر من عرض","غير صحيح، يجب الحصول على أكثر من عرض خطي كلما كان ذلك ممكناً لتحقيق المصلحة","صحيح بشرط دفع المبلغ نقداً"],ans:1},
+{q:"76. ما هي العملة التي تدفع بها عمولة الوكيل بالعمولة المعتمد في سورية؟",options:["بالدولار الأمريكي حصراً","بالليرة السورية وفق تاريخ الصرف المحدد بالنظام","باليورو الأوروبي"],ans:1},
+{q:"77. من يملك الصلاحية القانونية لإلغاء المناقصة قبل الإحالة بقرار مبرر؟",options:["آمر الصرف","رئيس ديوان الوزارة","أحد العارضين المتنافسين"],ans:0},
+{q:"78. ما هي الأظرف الثلاثة المطلوبة في طلب العروض؟",options:["الأول للوثائق، الثاني للعرض الفني، والثالث للعرض المالي والتجاري","جميعها أظرف مالية فقط","الأول للكفالة والثاني للهوية والثالث للطلب"],ans:0},
+{q:"79. هل يجوز فرض غرامات تأخير تتجاوز السقف المحدد في العقد والدفاتر؟",options:["نعم، دون حد أقصى","لا، يلتزم بالسقف الأقصى المحدد في دفتر الشروط (وهو عادة 20%)","نعم، بموافقة المحافظ"],ans:1},
+{q:"80. متى تسقط المطالبة بالحقوق المالية الناتجة عن العقد بوجه الجهة العامة؟",options:["بانقضاء مدة التقادم الطويل أو المهل القانونية المحددة بالتشريعات النافذة","بمجرد انتهاء سنة من توقيع العقد","لا تسقط المطالبة المالية أبداً عبر الأجيال"],ans:0}
+];
+
+/* ============================================================
+   بناء جلسة الاختبار: سحب عشوائي + توزيع عشوائي للخيارات
+   ============================================================ */
+function buildSession(){
+  const list = questionsData.map((q, idx) => ({
+    q: q.q,
+    options: q.options.slice(),
+    ans: q.ans,
+    srcId: idx + 1
+  }));
+
+  // سحب عشوائي من بنك الأسئلة
+  shuffle(list);
+
+  // إعادة توزيع الخيارات عشوائياً (أ / ب / ج ...)
+  list.forEach(item => {
+    const correctIdx = item.ans;
+    const packed = item.options.map((txt, i) => ({ txt, ok: i === correctIdx }));
+    shuffle(packed);
+    item.options = packed.map(p => p.txt);
+    item.ans = packed.findIndex(p => p.ok);
+  });
+
+  return list;
+}
+
+/* ============ START EXAM ============ */
+function startExam(){
+  SFX.click();
+  document.getElementById('start-view').style.display = 'none';
+  document.getElementById('quiz-view').style.display = 'block';
+  document.getElementById('timer-card').style.display = 'flex';
+
+  session = buildSession();
+  userAnswers = new Array(session.length).fill(null);
+  bookmarked = new Array(session.length).fill(false);
+  currentQuestion = 0;
+  timeLeft = EXAM_SECONDS;
+  examStartTime = Date.now();
+
+  document.getElementById('info-total').textContent = session.length;
+  document.getElementById('timer').textContent = '72:00';
+
+  renderNavGrid();
+  loadQuestion(0);
+  updateInfo();
+  startTimer();
+  setupKeyboardShortcuts();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ============ NAV GRID ============ */
+function renderNavGrid(){
+  const nav = document.getElementById('nav-grid');
+  nav.innerHTML = '';
+  session.forEach((_, i)=>{
+    const b = document.createElement('div');
+    b.className = 'nav-grid-item' + (i===0?' active':'');
+    b.id = 'nav-item-'+i;
+    b.textContent = i+1;
+    b.onclick = ()=>{ SFX.click(); goToQuestion(i); };
+    nav.appendChild(b);
+  });
+}
+
+/* ============ LOAD QUESTION ============ */
+function loadQuestion(idx){
+  currentQuestion = idx;
+  const q = session[idx];
+
+  document.getElementById('q-number').textContent = 'سؤال ' + (idx+1);
+  document.getElementById('q-text').textContent = q.q;
+
+  const bmBtn = document.getElementById('bookmark-btn');
+  const bmLabel = document.getElementById('bm-label');
+  if(bookmarked[idx]){
+    bmBtn.classList.add('active'); bmLabel.textContent = 'محفوظة';
+  } else {
+    bmBtn.classList.remove('active'); bmLabel.textContent = 'إشارة مرجعية';
+  }
+
+  const cont = document.getElementById('options-container');
+  cont.innerHTML = '';
+  const prefixes = ['أ','ب','ج','د'];
+
+  q.options.forEach((opt, i)=>{
+    const sel = userAnswers[idx] === i;
+    const d = document.createElement('div');
+    d.className = 'option-item' + (sel?' selected':'');
+    d.onclick = ()=>selectOption(i);
+    d.innerHTML = `<span class="option-prefix">${prefixes[i]}</span><span class="option-label">${opt}</span>`;
+    cont.appendChild(d);
+  });
+
+  const fb = document.getElementById('feedback-box');
+  fb.className = 'feedback-box';
+  if(userAnswers[idx] !== null){
+    const isCorrect = userAnswers[idx] === q.ans;
+    fb.classList.add('show', isCorrect ? 'correct':'wrong');
+    document.getElementById('fb-icon').textContent = isCorrect ? '✓':'✗';
+    document.getElementById('fb-text').textContent = isCorrect
+      ? 'إجابة صحيحة — أحسنت، هذه المعلومة مثبتة لديك.'
+      : 'إجابة غير صحيحة — الإجابة الصحيحة هي: ' + prefixes[q.ans] + ') ' + q.options[q.ans];
+  }
+
+  document.getElementById('btn-prev').disabled = idx===0;
+  document.getElementById('btn-next').textContent = idx===session.length-1 ? 'النهاية ✓' : 'التالي ◀';
+
+  document.querySelectorAll('.nav-grid-item').forEach((el,i)=>{
+    el.classList.remove('active');
+    if(i===idx) el.classList.add('active');
+  });
+
+  updateNavGridState(idx);
+  updateInfo();
+}
+
+function updateNavGridState(idx){
+  const nav = document.getElementById('nav-item-'+idx);
+  if(!nav) return;
+  if(bookmarked[idx]) nav.classList.add('bookmarked');
+  else nav.classList.remove('bookmarked');
+
+  if(userAnswers[idx] !== null){
+    nav.classList.add('answered');
+    if(userAnswers[idx] === session[idx].ans) nav.classList.add('correct');
+    else nav.classList.add('wrong');
+  }
+}
+
+/* ============ SELECT OPTION ============ */
+function selectOption(optIdx){
+  if(userAnswers[currentQuestion] !== null) return;
+
+  userAnswers[currentQuestion] = optIdx;
+  const q = session[currentQuestion];
+  const isCorrect = optIdx === q.ans;
+
+  const items = document.querySelectorAll('#options-container .option-item');
+  items.forEach((el,i)=>{
+    el.classList.remove('selected');
+    if(i === optIdx) el.classList.add('selected');
+    if(i === q.ans) el.classList.add('correct-reveal');
+    if(i === optIdx && !isCorrect) el.classList.add('wrong-reveal');
+  });
+
+  const fb = document.getElementById('feedback-box');
+  fb.classList.add('show', isCorrect ? 'correct':'wrong');
+  document.getElementById('fb-icon').textContent = isCorrect ? '✓':'✗';
+  const prefixes = ['أ','ب','ج','د'];
+  document.getElementById('fb-text').textContent = isCorrect
+    ? 'إجابة صحيحة — أحسنت، هذه المعلومة مثبتة لديك.'
+    : 'إجابة غير صحيحة — الإجابة الصحيحة هي: ' + prefixes[q.ans] + ') ' + q.options[q.ans];
+
+  if(isCorrect) SFX.correct(); else SFX.wrong();
+
+  updateNavGridState(currentQuestion);
+  updateInfo();
+}
+
+/* ============ INFO BAR ============ */
+function updateInfo(){
+  const answered = userAnswers.filter(a=>a!==null).length;
+  let correct = 0, wrong = 0;
+  userAnswers.forEach((a,i)=>{
+    if(a===null) return;
+    if(a===session[i].ans) correct++; else wrong++;
+  });
+  document.getElementById('info-total').textContent = session.length;
+  document.getElementById('info-answered').textContent = answered;
+  document.getElementById('info-correct').textContent = correct;
+  document.getElementById('info-wrong').textContent = wrong;
+
+  const pct = ((currentQuestion+1)/session.length)*100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent =
+    `سؤال ${currentQuestion+1} من ${session.length} — تمت الإجابة عن ${answered}`;
+}
+
+/* ============ BOOKMARK & TTS ============ */
+function toggleBookmark(){
+  bookmarked[currentQuestion] = !bookmarked[currentQuestion];
+  SFX.click();
+  showToast(bookmarked[currentQuestion] ? 'تمت إضافة السؤال إلى المفضلة ★' : 'تمت إزالة السؤال من المفضلة');
+  loadQuestion(currentQuestion);
+}
+
+function toggleTTS(){
+  if('speechSynthesis' in window){
+    window.speechSynthesis.cancel();
+    const msg = new SpeechSynthesisUtterance(session[currentQuestion].q);
+    msg.lang = 'ar-SA';
+    window.speechSynthesis.speak(msg);
+    showToast('جاري قراءة السؤال... 🔊');
+  } else {
+    showToast('خاصية القراءة الصوتية غير مدعومة في هذا المتصفح');
+  }
+}
+
+/* ============ KEYBOARD ============ */
+function setupKeyboardShortcuts(){
+  if(window._kbBound) return;
+  window._kbBound = true;
+  document.addEventListener('keydown', (e)=>{
+    if(document.getElementById('quiz-view').style.display !== 'block') return;
+    if(document.getElementById('cert-modal').classList.contains('active')) return;
+    if(e.key === 'ArrowLeft') nextQuestion();
+    if(e.key === 'ArrowRight') prevQuestion();
+    if(['1','2','3','4'].includes(e.key)) selectOption(parseInt(e.key)-1);
+  });
+}
+
+/* ============ NAVIGATION ============ */
+function nextQuestion(){ if(currentQuestion < session.length-1){ SFX.click(); loadQuestion(currentQuestion+1); } }
+function prevQuestion(){ if(currentQuestion > 0){ SFX.click(); loadQuestion(currentQuestion-1); } }
+function goToQuestion(i){ loadQuestion(i); }
+
+/* ============ TIMER ============ */
+function startTimer(){
+  clearInterval(timerInterval);
+  timerInterval = setInterval(()=>{
+    timeLeft--;
+    if(timeLeft < 0) timeLeft = 0;
+    const m = Math.floor(timeLeft/60); const s = timeLeft%60;
+    document.getElementById('timer').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    if(timeLeft <= 300) document.getElementById('timer-card').classList.add('warning');
+    if(timeLeft <= 0){
+      clearInterval(timerInterval);
+      showToast('⏰ انتهى الوقت المحدد — جاري التصحيح التلقائي');
+      setTimeout(submitExam, 800);
+    }
+  },1000);
+}
+
+/* ============ SUBMIT ============ */
+function confirmSubmit(){
+  const un = userAnswers.filter(a=>a===null).length;
+  let msg = 'هل تريد إنهاء الاختبار والانتقال إلى التصحيح؟';
+  if(un>0) msg = `لديك ${un} سؤال لم تُجب عليها. هل تريد الإنهاء الآن؟`;
+  if(confirm(msg)) submitExam();
+}
+
+function submitExam(){
+  clearInterval(timerInterval);
+
+  let correctCount = 0, wrongCount = 0;
+  userAnswers.forEach((a,i)=>{
+    if(a === session[i].ans) correctCount++;
+    else wrongCount++;
+  });
+
+  const pct = Math.round((correctCount/session.length)*100);
+  const elapsed = examStartTime ? Math.round((Date.now()-examStartTime)/1000) : (EXAM_SECONDS - timeLeft);
+  const em = Math.floor(elapsed/60), es = elapsed%60;
+
+  lastResult = { pct, correct: correctCount, total: session.length };
+
+  document.getElementById('quiz-view').style.display = 'none';
+  document.getElementById('timer-card').style.display = 'none';
+  const rv = document.getElementById('result-view');
+  rv.style.display = 'block';
+
+  document.getElementById('score-percentage').textContent = pct + '%';
+  document.getElementById('score-fraction').textContent = correctCount + ' / ' + session.length;
+  document.getElementById('count-correct').textContent = '✅ صحيحة: ' + correctCount;
+  document.getElementById('count-wrong').textContent = '❌ خاطئة: ' + wrongCount;
+  document.getElementById('time-used').textContent = `⏱️ الزمن المستغرق: ${String(em).padStart(2,'0')}:${String(es).padStart(2,'0')}`;
+
+  const best = parseInt(localStorage.getItem('contracts_best') || 0, 10);
+  const newBest = Math.max(best, correctCount);
+  localStorage.setItem('contracts_best', newBest);
+  document.getElementById('best-score').textContent = '🏅 أعلى نتيجة سابقة: ' + newBest;
+
+  const statusEl = document.getElementById('result-status');
+  const certBox = document.getElementById('cert-issue-box');
+
+  if(pct >= PASS_PERCENT){
+    statusEl.textContent = 'النتيجة: اجتياز بتفوّق — مؤهَّل لإصدار شهادة إتمام التدريب';
+    statusEl.className = 'result-status status-pass';
+    certBox.style.display = 'block';
+    SFX.done();
+  } else {
+    statusEl.textContent = 'النتيجة: لم تُحقق نسبة الاجتياز (75%) — يُنصح بإعادة التدريب والمحاولة مجدداً';
+    statusEl.className = 'result-status status-fail';
+    certBox.style.display = 'none';
+    SFX.wrong();
+  }
+
+  /* ---- سلم التصحيح التفصيلي ---- */
+  const rl = document.getElementById('review-list');
+  rl.innerHTML = '';
+  const prefixes = ['أ','ب','ج','د'];
+  session.forEach((q,i)=>{
+    const a = userAnswers[i];
+    const ok = a === q.ans;
+    const item = document.createElement('div');
+    item.className = 'review-item' + (ok ? '' : ' bad');
+    const userTxt = a!==null ? prefixes[a]+') '+q.options[a] : 'لم تُجب عن هذا السؤال';
+    const corrTxt = prefixes[q.ans]+') '+q.options[q.ans];
+    item.innerHTML = `
+      <div class="review-q">${q.q}</div>
+      <div class="review-ans ${ok?'ok':'no'}">إجابتك: ${userTxt} ${ok?'✓':'✗'}</div>
+      ${!ok ? `<div class="review-correct">الإجابة الصحيحة: ${corrTxt}</div>` : ''}
+    `;
+    rl.appendChild(item);
+  });
+
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ============ CERTIFICATE ============ */
+function issueCertificate(){
+  const input = document.getElementById('trainee-name');
+  const name = (input.value || '').trim().replace(/\s+/g,' ');
+  if(!name || name.split(' ').length < 3){
+    showToast('⚠️ يرجى كتابة الاسم الثلاثي كاملاً (الاسم واسم الأب واسم العائلة)');
+    input.focus();
+    return;
+  }
+  traineeName = name;
+  SFX.done();
+  showCertificate();
+}
+
+function certNumber(){
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  const rnd = Math.floor(1000 + Math.random()*9000);
+  return `MA-${y}${m}${day}-${rnd}`;
+}
+let currentCertNo = '';
+
+function showCertificate(){
+  if(!currentCertNo) currentCertNo = certNumber();
+  document.getElementById('cert-user-name').textContent = traineeName;
+  document.getElementById('cert-score-pill').textContent = `النتيجة: ${lastResult.pct}% (${lastResult.correct}/${lastResult.total})`;
+  document.getElementById('cert-date-pill').textContent = `التاريخ: ${todayStr()}`;
+  document.getElementById('cert-no-pill').textContent = `رقم الشهادة: ${currentCertNo}`;
+  document.getElementById('cert-footer-date').textContent = todayStr();
+  document.getElementById('cert-modal').classList.add('active');
+}
+function closeCertificate(){
+  document.getElementById('cert-modal').classList.remove('active');
+}
+
+/* ============ PRINT: CERTIFICATE ============ */
+function printCertificate(){
+  if(!traineeName) return;
+  const area = document.getElementById('print-area');
+  area.innerHTML = `
+    <div class="cert-print">
+      <div style="display:flex;align-items:center;gap:14px;text-align:right">
+        <div style="width:56px;height:56px;border-radius:12px;background:#1e3a8a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px">M.A</div>
+        <div>
+          <div class="cp-org">منصة M.A للتدريب والتأهيل المهني</div>
+          <div class="cp-sub">البيئة التفاعلية المتطورة لإعداد الكوادر</div>
+        </div>
+      </div>
+      <hr style="margin:16px 0;border:none;border-top:3px double #b8860b">
+      <div class="cp-title">شهادة إتمام تدريب واجتياز اختبار</div>
+      <p style="font-size:12.5px;font-weight:700;color:#475569">تشهد منصة M.A للتدريب والتأهيل المهني بأن المتدرّب/المتدرّبة:</p>
+      <div class="cp-name">${traineeName}</div>
+      <p class="cp-body">
+        قد أتمّ بنجاح البرنامج التدريبي في <b>«قانون العقود العامة — المرسوم التشريعي رقم 51 لعام 2004»</b>
+        واجتاز الاختبار التدريبي المخصص له وفقاً للضوابط والإجراءات المعتمدة في المنصة،
+        وذلك بنتيجة <b>${lastResult.pct}%</b> (${lastResult.correct} من ${lastResult.total}).
+      </p>
+      <p class="cp-body">رقم الشهادة: <b>${currentCertNo || certNumber()}</b> — تاريخ الإصدار: <b>${todayStr()}</b></p>
+      <div class="cp-note">
+        <b>تنبيه نظامي:</b> هذه الشهادة صادرة عن منصة M.A للتدريب والتأهيل المهني لأغراض التدريب والتأهيل المهني فقط،
+        وهي تثبت اجتياز اختبار تدريبي داخلي، ولا تُعدّ وثيقة رسمية، ولا تمنح أي صفة قانونية أو مهنية أو حقاً مكتسباً
+        لدى أي جهة إدارية أو قضائية، ولا تُغني عن أي إجازة أو ترخيص أو شهادة تصدر عن الجهات المختصة وفق القوانين والأنظمة النافذة.
+      </div>
+      <div class="cp-foot">
+        <div>منصة M.A للتدريب والتأهيل المهني<br>الجهة المانحة للشهادة</div>
+        <div style="border:2px double #b8860b;border-radius:50%;width:80px;height:80px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#8a6300;font-size:9px;text-align:center">ختم<br>المنصة</div>
+        <div>إعداد وتصميم: أ. مصطفى علي اكر<br>البيئة التفاعلية المتطورة لإعداد الكوادر</div>
+      </div>
+    </div>
+  `;
+  window.print();
+}
+
+/* ============ PRINT: CORRECTION KEY (مفتوح للجميع) ============ */
+function printCorrectionKey(){
+  const prefixes = ['أ','ب','ج','د'];
+  let html = `
+    <div class="print-doc">
+      <h1>سلم التصحيح — مسابقة قانون العقود العامة (المرسوم التشريعي رقم 51 لعام 2004)</h1>
+      <div class="p-head">صادر عن منصة M.A للتدريب والتأهيل المهني — البيئة التفاعلية المتطورة لإعداد الكوادر</div>
+      <div class="p-head">إعداد وتصميم: أ. مصطفى علي اكر</div>
+      <div class="p-meta">
+        المتدرّب: <b>${traineeName || '—'}</b> &nbsp;|&nbsp;
+        التاريخ: <b>${todayStr()}</b> &nbsp;|&nbsp;
+        النتيجة: <b>${lastResult.pct}%</b> (${lastResult.correct} من ${lastResult.total}) &nbsp;|&nbsp;
+        درجة النجاح: <b>75%</b>
+      </div>
+      <h2>التفصيل الكامل للأسئلة والإجابات</h2>
+  `;
+
+  session.forEach((q,i)=>{
+    const a = userAnswers[i];
+    const ok = a === q.ans;
+    const userTxt = a!==null ? prefixes[a]+') '+q.options[a] : 'لم تُجب';
+    const corrTxt = prefixes[q.ans]+') '+q.options[q.ans];
+    html += `
+      <div class="p-item">
+        <div class="p-q">${q.q}</div>
+        <div class="${ok?'p-ok':'p-no'}">إجابة المتدرّب: ${userTxt} ${ok?'(صحيحة ✓)':'(خاطئة ✗)'}</div>
+        <div class="p-corr">الإجابة الصحيحة: ${corrTxt}</div>
+      </div>
+    `;
+  });
+
+  html += `</div>`;
+  document.getElementById('print-area').innerHTML = html;
+  window.print();
+}
+
+/* ============ SHARE ============ */
+function shareResult(){
+  const pct = document.getElementById('score-percentage').textContent;
+  const frac = document.getElementById('score-fraction').textContent;
+  const txt = `منصة M.A للتدريب والتأهيل المهني\nنتيجتي في مسابقة قانون العقود العامة (المرسوم 51/2004): ${pct} (${frac})`;
+  if(navigator.share){
+    navigator.share({title:'نتيجة الاختبار التدريبي', text:txt}).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(txt).then(()=>showToast('تم نسخ النتيجة إلى الحافظة 📋')).catch(()=>showToast('تعذّر النسخ'));
+  }
+}
+</script>
+</body>
+</html>
