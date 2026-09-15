@@ -32,6 +32,20 @@ jobs:
           sudo chmod +x /opt/gradle/gradle-8.1/bin/gradle
           echo "/opt/gradle/gradle-8.1/bin" >> $GITHUB_PATH
 
+      - name: Setup App Icon
+        run: |
+          mkdir -p app/src/main/res/drawable
+          if [ -f play_store_512.png ]; then
+            cp play_store_512.png app/src/main/res/drawable/ic_launcher.png
+          elif [ -f icon.png ]; then
+            cp icon.png app/src/main/res/drawable/ic_launcher.png
+          elif [ -f ic_launcher.png ]; then
+            cp ic_launcher.png app/src/main/res/drawable/ic_launcher.png
+          else
+            echo "⚠️ لم يتم العثور على أي أيقونة في الجذر — سيتم المتابعة بدون أيقونة مخصصة"
+          fi
+          ls -la app/src/main/res/drawable/ || true
+
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > app/ma-platform-key.jks
@@ -39,9 +53,7 @@ jobs:
 
       - name: Verify Keystore
         run: |
-          echo "=== حجم الملف ==="
           wc -c app/ma-platform-key.jks
-          echo "=== محاولة قراءة Keystore ==="
           keytool -list -keystore app/ma-platform-key.jks -storepass "M.A@2026#Key" 2>&1 | head -20
 
       - name: Build Signed Release APK
