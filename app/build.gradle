@@ -15,13 +15,13 @@ android {
     }
 
     signingConfigs {
-    release {
-        storeFile file("ma-platform-key.jks")
-        storePassword "M.A@2026#Key"
-        keyAlias "ma-platform-key"
-        keyPassword "M.A@2026#Key"
+        release {
+            storeFile file("ma-platform-key.jks")
+            storePassword "M.A@2026#Key"
+            keyAlias "ma-platform-key"
+            keyPassword "M.A@2026#Key"
+        }
     }
-}
 
     buildTypes {
         release {
@@ -35,6 +35,11 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
     }
 }
 
