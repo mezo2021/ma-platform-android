@@ -555,8 +555,11 @@ sequenceDiagram
 </div>
 
 ---
+License
+This project is licensed under the MIT License. 
+<!--
 
-<!-- ═══════════════ دليل البناء والتثبيت ═══════════════ -->
+═══════════════ دليل البناء والتثبيت ═══════════════ -->
 
 <div dir="rtl">
 
