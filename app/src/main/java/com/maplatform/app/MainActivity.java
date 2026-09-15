@@ -21,19 +21,16 @@ import android.provider.MediaStore;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
+import android.view.Gravity;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,10 +64,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         super.onCreate(savedInstanceState);
 
         // 🌙 الوضع الليلي التلقائي حسب النظام
-        AppCompatDelegate.setDefaultNightMode(
-            AppCompatDelegate.DEFAULT_NIGHT_MODE != 0
-                ? AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-                : AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
 
         // 💡 إبقاء الشاشة مضاءة
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -107,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private void buildSplash() {
         splashContainer = new LinearLayout(this);
         splashContainer.setOrientation(LinearLayout.VERTICAL);
-        splashContainer.setGravity(android.view.Gravity.CENTER);
+        splashContainer.setGravity(Gravity.CENTER);
         splashContainer.setBackgroundColor(0xFF0F172A);
         splashContainer.setLayoutParams(new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
@@ -119,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         logo.setTextSize(64);
         logo.setTextColor(0xFFFBBF24);
         logo.setTypeface(null, android.graphics.Typeface.BOLD);
-        logo.setGravity(android.view.Gravity.CENTER);
+        logo.setGravity(Gravity.CENTER);
         logo.setShadowLayer(20, 0, 0, 0x66FBBF24);
 
         // اسم المنصة
@@ -128,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         title.setTextSize(18);
         title.setTextColor(0xFFF8FAFC);
         title.setTypeface(null, android.graphics.Typeface.BOLD);
-        title.setGravity(android.view.Gravity.CENTER);
+        title.setGravity(Gravity.CENTER);
         LinearLayout.LayoutParams titleParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -139,14 +133,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         subtitle.setText("البيئة التفاعلية المتطورة لإعداد الكوادر");
         subtitle.setTextSize(14);
         subtitle.setTextColor(0xFF94A3B8);
-        subtitle.setGravity(android.view.Gravity.CENTER);
+        subtitle.setGravity(Gravity.CENTER);
         LinearLayout.LayoutParams subParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         subParams.topMargin = 12;
 
         // مؤشر التحميل
-        android.widget.ProgressBar spinner = new android.widget.ProgressBar(
+        ProgressBar spinner = new ProgressBar(
                 this, null, android.R.attr.progressBarStyle);
         spinner.setIndeterminate(true);
         LinearLayout.LayoutParams spinnerParams = new LinearLayout.LayoutParams(80, 80);
@@ -157,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         credit.setText("إعداد: أ. مصطفى علي اكر");
         credit.setTextSize(12);
         credit.setTextColor(0xFFFBBF24);
-        credit.setGravity(android.view.Gravity.CENTER);
+        credit.setGravity(Gravity.CENTER);
         LinearLayout.LayoutParams credParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -590,47 +584,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             });
         }
 
-        /** 📄 حفظ PDF من HTML */
-        @JavascriptInterface
-        public void savePdf(final String htmlContent, final String fileName) {
-            if (htmlContent == null || htmlContent.trim().isEmpty()) return;
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                            android.print.PrintManager pm =
-                                (android.print.PrintManager) getSystemService(PRINT_SERVICE);
-                            if (pm == null) return;
-                            // نحول إلى مستند نصي قابل للطباعة كـ PDF
-                            WebView pdfWv = new WebView(MainActivity.this);
-                            pdfWv.loadDataWithBaseURL(null, htmlContent,
-                                    "text/HTML", "UTF-8", null);
-                            final String jobName = (fileName == null || fileName.trim().isEmpty())
-                                    ? "M.A_Document"
-                                    : fileName.trim();
-                            pdfWv.setWebViewClient(new WebViewClient() {
-                                @Override
-                                public void onPageFinished(WebView v, String url) {
-                                    try {
-                                        PrintDocumentAdapter adapter =
-                                            v.createPrintDocumentAdapter(jobName);
-                                        PrintAttributes attrs = new PrintAttributes.Builder()
-                                            .setMediaSize(PrintAttributes.MediaSize.ISO_A4)
-                                            .build();
-                                        PrintManager pm2 =
-                                            (PrintManager) getSystemService(PRINT_SERVICE);
-                                        if (pm2 != null)
-                                            pm2.print(jobName, adapter, attrs);
-                                    } catch (Exception e) { Log.e(TAG, "pdf print", e); }
-                                }
-                            });
-                        }
-                    } catch (Exception e) { Log.e(TAG, "savePdf error", e); }
-                }
-            });
-        }
-
         @JavascriptInterface
         public void setNightMode(final int mode) {
             runOnUiThread(new Runnable() {
@@ -657,7 +610,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             } catch (Exception e) { return 0; }
         }
 
-        /** 🔔 إشعار تجريبي */
         @JavascriptInterface
         public void showTestNotification() {
             runOnUiThread(new Runnable() {
@@ -669,7 +621,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             });
         }
 
-        /** ⏰ تفعيل / إلغاء الإشعارات اليومية */
         @JavascriptInterface
         public void setDailyReminder(boolean enable) {
             try {
