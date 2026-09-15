@@ -4,7 +4,6 @@
         <item name="colorPrimary">@color/navy</item>
         <item name="colorPrimaryDark">@color/navy</item>
         <item name="colorAccent">@color/accent</item>
-        <item name="android:windowBackground">@color/navy</item>
         <item name="android:statusBarColor">@color/navy</item>
         <item name="android:navigationBarColor">@color/navy</item>
     </style>
