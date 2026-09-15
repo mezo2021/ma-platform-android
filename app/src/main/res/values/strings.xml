@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">منصة M.A للتدريب والتأهيل</string>
-    <string name="notification_channel_name">تذكير التدريب اليومي</string>
-    <string name="notification_channel_desc">تذكير يومي بمواصلة التدريب</string>
 </resources>
